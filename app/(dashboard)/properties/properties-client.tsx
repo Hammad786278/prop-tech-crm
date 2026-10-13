@@ -117,23 +117,28 @@ export function PropertiesClient({
   return (
     <div className="space-y-6">
       {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="glass-panel p-6 rounded-3xl border border-slate-200/90 dark:border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm">
         <div>
-          <h1 className="text-2xl font-black text-navy-deep tracking-tight">
-            Properties & Inventory
-          </h1>
-          <p className="text-xs text-text-secondary mt-1">
-            Track real estate inventory, project allotments, and pricing in PKR.
+          <div className="flex items-center gap-2.5">
+            <h1 className="text-2xl font-black text-navy-deep dark:text-white tracking-tight">
+              Properties & Inventory Matrix
+            </h1>
+            <span className="px-2.5 py-0.5 rounded-full bg-indigo-500/10 text-primary dark:text-cyan font-extrabold text-xs border border-indigo-500/20">
+              {total} Units
+            </span>
+          </div>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+            Track real estate inventory, project allotments, and valuations in PKR.
           </p>
         </div>
 
         <div className="flex items-center gap-2">
           {/* Grid / List View Toggle */}
-          <div className="flex items-center p-1 bg-white border border-slate-200 rounded-xl">
+          <div className="flex items-center p-1 bg-slate-100 dark:bg-white/[0.06] border border-slate-200/80 dark:border-white/10 rounded-2xl">
             <button
               onClick={() => setViewMode("grid")}
-              className={`p-1.5 rounded-lg transition-colors ${
-                viewMode === "grid" ? "bg-slate-100 text-navy-deep" : "text-slate-400 hover:text-slate-700"
+              className={`p-1.5 rounded-xl transition-all ${
+                viewMode === "grid" ? "bg-white dark:bg-white/10 text-navy-deep dark:text-white shadow-2xs" : "text-slate-400 hover:text-slate-700 dark:hover:text-white"
               }`}
               title="Grid view"
             >
@@ -141,8 +146,8 @@ export function PropertiesClient({
             </button>
             <button
               onClick={() => setViewMode("list")}
-              className={`p-1.5 rounded-lg transition-colors ${
-                viewMode === "list" ? "bg-slate-100 text-navy-deep" : "text-slate-400 hover:text-slate-700"
+              className={`p-1.5 rounded-xl transition-all ${
+                viewMode === "list" ? "bg-white dark:bg-white/10 text-navy-deep dark:text-white shadow-2xs" : "text-slate-400 hover:text-slate-700 dark:hover:text-white"
               }`}
               title="List view"
             >
@@ -151,7 +156,7 @@ export function PropertiesClient({
           </div>
 
           {role !== "sales_agent" && (
-            <Button onClick={() => setIsCreateOpen(true)} size="sm">
+            <Button onClick={() => setIsCreateOpen(true)} size="sm" variant="primary" className="shadow-md shadow-indigo-600/25">
               <Plus className="w-4 h-4 mr-1.5" /> Add Property
             </Button>
           )}
@@ -159,71 +164,69 @@ export function PropertiesClient({
       </div>
 
       {/* Filter Toolbar */}
-      <Card>
-        <CardContent className="p-4">
-          <form
-            onSubmit={handleFilterSubmit}
-            className="flex flex-col lg:flex-row items-center gap-3"
-          >
-            <div className="relative flex-1 w-full">
-              <Search className="absolute left-3 top-2.5 w-4 h-4 text-slate-400" />
-              <input
-                type="text"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search by title, listing ref, locality, or project..."
-                className="w-full pl-9 pr-4 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:bg-white"
-              />
-            </div>
+      <div className="glass-panel p-4 rounded-3xl border border-slate-200/90 dark:border-white/10 shadow-xs">
+        <form
+          onSubmit={handleFilterSubmit}
+          className="flex flex-col lg:flex-row items-center gap-3"
+        >
+          <div className="relative flex-1 w-full">
+            <Search className="absolute left-3.5 top-2.5 w-4 h-4 text-slate-400" />
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search by title, listing ref, locality, or project..."
+              className="w-full pl-9 pr-4 py-2 text-xs bg-slate-50 dark:bg-white/[0.04] border border-slate-200 dark:border-white/10 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary shadow-2xs"
+            />
+          </div>
 
-            <div className="flex flex-wrap items-center gap-2 w-full lg:w-auto">
-              {/* Status */}
-              <select
-                value={status}
-                onChange={(e) => setStatus(e.target.value)}
-                className="h-9 px-3 text-xs bg-white border border-slate-300 rounded-lg text-slate-700"
-              >
-                <option value="all">All Statuses</option>
-                <option value="available">Available</option>
-                <option value="reserved">Reserved / On Hold</option>
-                <option value="sold">Sold / Unavailable</option>
-              </select>
+          <div className="flex flex-wrap items-center gap-2 w-full lg:w-auto">
+            {/* Status */}
+            <select
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
+              className="h-9 px-3 text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-xl text-slate-800 dark:text-slate-200 focus:outline-none"
+            >
+              <option value="all">All Statuses</option>
+              <option value="available">Available</option>
+              <option value="reserved">Reserved / On Hold</option>
+              <option value="sold">Sold / Unavailable</option>
+            </select>
 
-              {/* Type */}
-              <select
-                value={propertyType}
-                onChange={(e) => setPropertyType(e.target.value)}
-                className="h-9 px-3 text-xs bg-white border border-slate-300 rounded-lg text-slate-700"
-              >
-                <option value="all">All Property Types</option>
-                <option value="Apartment">Apartment</option>
-                <option value="House">House</option>
-                <option value="Residential Plot">Residential Plot</option>
-                <option value="Commercial Property">Commercial Property</option>
-                <option value="Shop/Office">Shop / Office</option>
-                <option value="Villa">Villa</option>
-              </select>
+            {/* Type */}
+            <select
+              value={propertyType}
+              onChange={(e) => setPropertyType(e.target.value)}
+              className="h-9 px-3 text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-xl text-slate-800 dark:text-slate-200 focus:outline-none"
+            >
+              <option value="all">All Property Types</option>
+              <option value="Apartment">Apartment</option>
+              <option value="House">House</option>
+              <option value="Residential Plot">Residential Plot</option>
+              <option value="Commercial Property">Commercial Property</option>
+              <option value="Shop/Office">Shop / Office</option>
+              <option value="Villa">Villa</option>
+            </select>
 
-              {/* City */}
-              <select
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
-                className="h-9 px-3 text-xs bg-white border border-slate-300 rounded-lg text-slate-700"
-              >
-                <option value="all">All Cities</option>
-                <option value="Karachi">Karachi</option>
-                <option value="Lahore">Lahore</option>
-                <option value="Islamabad">Islamabad</option>
-                <option value="Rawalpindi">Rawalpindi</option>
-              </select>
+            {/* City */}
+            <select
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+              className="h-9 px-3 text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-xl text-slate-800 dark:text-slate-200 focus:outline-none"
+            >
+              <option value="all">All Cities</option>
+              <option value="Karachi">Karachi</option>
+              <option value="Lahore">Lahore</option>
+              <option value="Islamabad">Islamabad</option>
+              <option value="Rawalpindi">Rawalpindi</option>
+            </select>
 
-              <Button type="submit" variant="secondary" size="sm">
-                Filter
-              </Button>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
+            <Button type="submit" variant="secondary" size="sm">
+              Filter
+            </Button>
+          </div>
+        </form>
+      </div>
 
       {/* Grid or List Display */}
       {initialProperties.length === 0 ? (
@@ -243,9 +246,9 @@ export function PropertiesClient({
           {initialProperties.map((prop) => {
             const st = PROPERTY_STATUS_CONFIG[prop.status];
             return (
-              <Card
+              <div
                 key={prop.id}
-                className="overflow-hidden hover:shadow-premium transition-all group flex flex-col justify-between"
+                className="glass-card rounded-3xl overflow-hidden hover:shadow-2xl dark:hover:shadow-[0_20px_45px_rgba(0,0,0,0.7)] hover:border-indigo-500/50 dark:hover:border-indigo-400/50 transition-all group flex flex-col justify-between"
               >
                 <div>
                   {/* Property Image Cover */}
@@ -257,39 +260,39 @@ export function PropertiesClient({
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
                     ) : (
-                      <div className="w-full h-full flex flex-col items-center justify-center bg-slate-800 text-slate-400 p-4 text-center">
-                        <Building className="w-8 h-8 mb-1 text-slate-500" />
-                        <span className="text-[11px] font-semibold">{prop.propertyType}</span>
+                      <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-950 text-slate-400 p-4 text-center">
+                        <Building className="w-9 h-9 mb-1.5 text-primary/70 animate-pulse" />
+                        <span className="text-[11px] font-extrabold text-slate-300 uppercase tracking-wider">{prop.propertyType}</span>
                       </div>
                     )}
                     <span
-                      className={`absolute top-3 left-3 px-2.5 py-1 rounded-full text-xs font-bold shadow-sm ${st.bg} ${st.color}`}
+                      className={`absolute top-3 left-3 px-2.5 py-1 rounded-full text-xs font-black shadow-md ${st.bg} ${st.color}`}
                     >
                       {st.label}
                     </span>
-                    <span className="absolute bottom-3 right-3 px-2 py-0.5 rounded bg-black/75 backdrop-blur-xs text-[10px] font-mono text-white">
+                    <span className="absolute bottom-3 right-3 px-2 py-0.5 rounded-lg bg-black/80 backdrop-blur-md text-[10px] font-mono text-white border border-white/10">
                       Ref: {prop.listingReference}
                     </span>
                   </div>
 
                   <div className="p-5 space-y-2">
-                    <p className="text-xs font-bold text-primary">{prop.propertyType}</p>
+                    <p className="text-xs font-extrabold text-primary dark:text-cyan">{prop.propertyType}</p>
                     <Link
                       href={`/properties/${prop.id}`}
-                      className="font-extrabold text-base text-navy-deep group-hover:text-primary transition-colors line-clamp-1 block"
+                      className="font-extrabold text-base text-navy-deep dark:text-white group-hover:text-primary dark:group-hover:text-cyan transition-colors line-clamp-1 block"
                     >
                       {prop.title}
                     </Link>
-                    <p className="text-xs text-slate-500 flex items-center gap-1">
+                    <p className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
                       <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                      <span>
+                      <span className="truncate">
                         {prop.area}, {prop.city}
                       </span>
                     </p>
 
-                    <div className="pt-2 flex items-center justify-between border-t border-slate-100 text-xs text-slate-600">
-                      <span className="flex items-center gap-1 font-semibold">
-                        <Maximize2 className="w-3.5 h-3.5 text-slate-400" />
+                    <div className="pt-2.5 flex items-center justify-between border-t border-slate-100 dark:border-white/8 text-xs text-slate-600 dark:text-slate-400">
+                      <span className="flex items-center gap-1 font-bold text-slate-700 dark:text-slate-300">
+                        <Maximize2 className="w-3.5 h-3.5 text-primary dark:text-cyan" />
                         {prop.size} {prop.sizeUnit}
                       </span>
                       {prop.bedrooms && (
@@ -308,49 +311,49 @@ export function PropertiesClient({
                   </div>
                 </div>
 
-                <div className="p-5 pt-0 flex items-center justify-between border-t border-slate-100">
+                <div className="p-5 pt-0 flex items-center justify-between border-t border-slate-100 dark:border-white/8">
                   <div>
-                    <span className="text-[10px] text-slate-400 uppercase font-bold">Asking Price</span>
-                    <p className="text-lg font-black text-navy-deep">
+                    <span className="text-[10px] text-slate-400 uppercase font-extrabold">Asking Valuation</span>
+                    <p className="text-lg font-black text-navy-deep dark:text-white">
                       {formatCurrency(prop.price, prop.currency)}
                     </p>
                   </div>
                   <Link href={`/properties/${prop.id}`}>
-                    <Button variant="outline" size="sm" className="text-xs font-semibold">
+                    <Button variant="outline" size="sm" className="text-xs font-bold">
                       Details <ArrowRight className="w-3.5 h-3.5 ml-1" />
                     </Button>
                   </Link>
                 </div>
-              </Card>
+              </div>
             );
           })}
         </div>
       ) : (
         /* List Mode */
-        <Card>
-          <CardContent className="p-0">
+        <div className="glass-panel rounded-3xl border border-slate-200/90 dark:border-white/10 shadow-sm overflow-hidden">
+          <div className="p-0">
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse text-xs">
                 <thead>
-                  <tr className="border-b border-slate-200 bg-slate-50/75 text-slate-500 font-semibold">
-                    <th className="p-3 pl-6">Listing Reference & Title</th>
-                    <th className="p-3">Location</th>
-                    <th className="p-3">Type</th>
-                    <th className="p-3">Size</th>
-                    <th className="p-3">Price</th>
-                    <th className="p-3">Status</th>
-                    <th className="p-3 pr-6 text-right">Action</th>
+                  <tr className="border-b border-slate-100 dark:border-white/8 bg-slate-50/70 dark:bg-white/[0.02] text-slate-500 dark:text-slate-400 font-extrabold uppercase tracking-wider text-[10px]">
+                    <th className="p-3.5 pl-6">Listing Reference & Title</th>
+                    <th className="p-3.5">Location</th>
+                    <th className="p-3.5">Type</th>
+                    <th className="p-3.5">Dimensions</th>
+                    <th className="p-3.5">Valuation</th>
+                    <th className="p-3.5">Status</th>
+                    <th className="p-3.5 pr-6 text-right">Action</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100">
+                <tbody className="divide-y divide-slate-100 dark:divide-white/5">
                   {initialProperties.map((prop) => {
                     const st = PROPERTY_STATUS_CONFIG[prop.status];
                     return (
-                      <tr key={prop.id} className="hover:bg-slate-50 transition-colors">
-                        <td className="p-3 pl-6">
+                      <tr key={prop.id} className="hover:bg-slate-50/80 dark:hover:bg-white/[0.04] transition-colors group">
+                        <td className="p-3.5 pl-6">
                           <Link
                             href={`/properties/${prop.id}`}
-                            className="font-bold text-navy-deep hover:text-primary transition-colors block text-sm max-w-sm truncate"
+                            className="font-extrabold text-navy-deep dark:text-white group-hover:text-primary dark:group-hover:text-cyan transition-colors block text-sm max-w-sm truncate"
                           >
                             {prop.title}
                           </Link>
@@ -358,24 +361,24 @@ export function PropertiesClient({
                             Ref: {prop.listingReference} {prop.projectName ? `• ${prop.projectName}` : ""}
                           </span>
                         </td>
-                        <td className="p-3 text-slate-700">
+                        <td className="p-3.5 text-slate-700 dark:text-slate-300 font-medium">
                           {prop.area}, {prop.city}
                         </td>
-                        <td className="p-3 font-semibold text-slate-700">{prop.propertyType}</td>
-                        <td className="p-3 font-medium">
+                        <td className="p-3.5 font-bold text-slate-800 dark:text-slate-200">{prop.propertyType}</td>
+                        <td className="p-3.5 font-bold text-slate-800 dark:text-slate-200">
                           {prop.size} {prop.sizeUnit}
                         </td>
-                        <td className="p-3 font-black text-navy-deep text-sm">
+                        <td className="p-3.5 font-black text-navy-deep dark:text-white text-sm">
                           {formatCurrency(prop.price, prop.currency)}
                         </td>
-                        <td className="p-3">
-                          <span className={`px-2 py-0.5 rounded-full font-bold ${st.bg} ${st.color}`}>
+                        <td className="p-3.5">
+                          <span className={`px-2.5 py-0.5 rounded-full font-bold text-[11px] ${st.bg} ${st.color}`}>
                             {st.label}
                           </span>
                         </td>
-                        <td className="p-3 pr-6 text-right">
+                        <td className="p-3.5 pr-6 text-right">
                           <Link href={`/properties/${prop.id}`}>
-                            <Button variant="ghost" size="sm" className="h-7 text-xs font-semibold">
+                            <Button variant="ghost" size="sm" className="h-7 text-xs font-bold hover:bg-slate-100 dark:hover:bg-white/10">
                               View <ArrowRight className="w-3.5 h-3.5 ml-1" />
                             </Button>
                           </Link>
@@ -386,8 +389,8 @@ export function PropertiesClient({
                 </tbody>
               </table>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       )}
 
       {/* Create Property Modal */}

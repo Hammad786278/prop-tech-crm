@@ -12,8 +12,10 @@ import {
   Globe,
   Clock,
   Coins,
+  Settings as SettingsIcon,
+  CheckCircle2,
+  ExternalLink,
 } from "lucide-react";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -62,43 +64,60 @@ export function SettingsClient({
   };
 
   return (
-    <div className="space-y-6 animate-in fade-in duration-200">
-      {/* Header */}
-      <div>
-        <h1 className="text-2xl font-black text-navy-deep tracking-tight">Settings & Workspace</h1>
-        <p className="text-xs text-text-secondary mt-1">
-          Agency profile parameters, pipeline definitions, and compliance audit trail.
-        </p>
+    <div className="space-y-8 animate-in fade-in duration-300">
+      {/* Top Header Card */}
+      <div className="glass-panel rounded-3xl p-6 sm:p-8 relative overflow-hidden bg-white/70 dark:bg-slate-900/80 border border-slate-200/80 dark:border-slate-800/80">
+        <div className="absolute top-0 right-0 w-80 h-80 bg-gradient-to-br from-indigo-500/10 via-cyan-500/10 to-transparent blur-3xl pointer-events-none" />
+        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200/60 dark:border-indigo-800/50 text-[11px] font-bold text-indigo-700 dark:text-indigo-400 mb-2">
+              <SettingsIcon className="w-3.5 h-3.5" />
+              <span>Workspace & Security Governance</span>
+            </div>
+            <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+              Settings & Workspace
+            </h1>
+            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1 max-w-xl">
+              Tenant profile parameters, sales pipeline configurations, and compliance audit trail.
+            </p>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span className="px-3 py-1.5 rounded-2xl bg-slate-100 dark:bg-slate-800 text-xs font-bold text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+              {organization.name}
+            </span>
+          </div>
+        </div>
       </div>
 
-      {/* Tabs */}
-      <div className="flex flex-wrap items-center gap-2 border-b border-slate-200">
+      {/* Modern Tabs Navigation */}
+      <div className="flex flex-wrap items-center gap-2 p-1.5 rounded-2xl bg-slate-100/80 dark:bg-slate-800/80 border border-slate-200/60 dark:border-slate-700/60 w-fit">
         <button
           onClick={() => setActiveTab("agency")}
-          className={`px-4 py-2.5 text-xs font-bold border-b-2 transition-colors flex items-center gap-1.5 ${
+          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
             activeTab === "agency"
-              ? "border-primary text-primary"
-              : "border-transparent text-slate-500 hover:text-slate-900"
+              ? "bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-sm"
+              : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
           }`}
         >
           <Building2 className="w-3.5 h-3.5" /> Agency Profile
         </button>
         <button
           onClick={() => setActiveTab("pipeline")}
-          className={`px-4 py-2.5 text-xs font-bold border-b-2 transition-colors flex items-center gap-1.5 ${
+          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
             activeTab === "pipeline"
-              ? "border-primary text-primary"
-              : "border-transparent text-slate-500 hover:text-slate-900"
+              ? "bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-sm"
+              : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
           }`}
         >
           <Kanban className="w-3.5 h-3.5" /> Pipeline Stages
         </button>
         <button
           onClick={() => setActiveTab("integrations")}
-          className={`px-4 py-2.5 text-xs font-bold border-b-2 transition-colors flex items-center gap-1.5 ${
+          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
             activeTab === "integrations"
-              ? "border-primary text-primary"
-              : "border-transparent text-slate-500 hover:text-slate-900"
+              ? "bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-sm"
+              : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
           }`}
         >
           <Share2 className="w-3.5 h-3.5" /> Integrations Roadmap
@@ -106,10 +125,10 @@ export function SettingsClient({
         {role === "agency_owner" && (
           <button
             onClick={() => setActiveTab("audit")}
-            className={`px-4 py-2.5 text-xs font-bold border-b-2 transition-colors flex items-center gap-1.5 ${
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
               activeTab === "audit"
-                ? "border-primary text-primary"
-                : "border-transparent text-slate-500 hover:text-slate-900"
+                ? "bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-sm"
+                : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
             }`}
           >
             <ShieldCheck className="w-3.5 h-3.5" /> Audit Events ({auditEvents.length})
@@ -121,249 +140,269 @@ export function SettingsClient({
       {activeTab === "agency" && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-sm">Agency Business Profile</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleSaveAgency} className="space-y-4">
+            <div className="glass-panel rounded-3xl p-6 sm:p-7 border border-slate-200/80 dark:border-slate-800/80 bg-white/70 dark:bg-slate-900/80 shadow-sm">
+              <h2 className="text-base font-bold text-slate-900 dark:text-white mb-1">Agency Business Profile</h2>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mb-6">
+                Core identity variables used across invoice templates and customer emails.
+              </p>
+
+              <form onSubmit={handleSaveAgency} className="space-y-5">
+                <Input
+                  label="Agency Legal Name"
+                  value={agencyForm.name}
+                  onChange={(e) => setAgencyForm({ ...agencyForm, name: e.target.value })}
+                  disabled={role !== "agency_owner"}
+                  className="dark:bg-slate-800 dark:border-slate-700 dark:text-white"
+                />
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <Input
-                    label="Agency Name"
-                    value={agencyForm.name}
-                    onChange={(e) => setAgencyForm({ ...agencyForm, name: e.target.value })}
+                    label="Official Contact Email"
+                    type="email"
+                    value={agencyForm.contactEmail}
+                    onChange={(e) =>
+                      setAgencyForm({ ...agencyForm, contactEmail: e.target.value })
+                    }
                     disabled={role !== "agency_owner"}
+                    className="dark:bg-slate-800 dark:border-slate-700 dark:text-white"
                   />
+                  <Input
+                    label="Office Phone"
+                    value={agencyForm.phone}
+                    onChange={(e) => setAgencyForm({ ...agencyForm, phone: e.target.value })}
+                    disabled={role !== "agency_owner"}
+                    className="dark:bg-slate-800 dark:border-slate-700 dark:text-white"
+                  />
+                </div>
 
-                  <div className="grid grid-cols-2 gap-4">
-                    <Input
-                      label="Contact Email"
-                      type="email"
-                      value={agencyForm.contactEmail}
-                      onChange={(e) =>
-                        setAgencyForm({ ...agencyForm, contactEmail: e.target.value })
-                      }
-                      disabled={role !== "agency_owner"}
-                    />
-                    <Input
-                      label="Phone"
-                      value={agencyForm.phone}
-                      onChange={(e) => setAgencyForm({ ...agencyForm, phone: e.target.value })}
-                      disabled={role !== "agency_owner"}
-                    />
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+                  <div className="p-3.5 rounded-2xl bg-slate-50/80 dark:bg-slate-800/50 border border-slate-200/70 dark:border-slate-700/60">
+                    <p className="text-[10px] text-slate-400 font-bold uppercase flex items-center gap-1.5">
+                      <Globe className="w-3.5 h-3.5 text-indigo-500" /> Country Region
+                    </p>
+                    <p className="text-xs font-bold text-slate-900 dark:text-white mt-1">{agencyForm.country}</p>
                   </div>
-
-                  <div className="grid grid-cols-3 gap-3">
-                    <div className="p-3 rounded-xl bg-slate-50 border border-slate-200">
-                      <p className="text-[10px] text-slate-400 font-bold uppercase flex items-center gap-1">
-                        <Globe className="w-3 h-3" /> Country
-                      </p>
-                      <p className="text-xs font-bold text-navy-deep mt-0.5">{agencyForm.country}</p>
-                    </div>
-                    <div className="p-3 rounded-xl bg-slate-50 border border-slate-200">
-                      <p className="text-[10px] text-slate-400 font-bold uppercase flex items-center gap-1">
-                        <Clock className="w-3 h-3" /> Timezone
-                      </p>
-                      <p className="text-xs font-bold text-navy-deep mt-0.5">
-                        {agencyForm.timezone}
-                      </p>
-                    </div>
-                    <div className="p-3 rounded-xl bg-slate-50 border border-slate-200">
-                      <p className="text-[10px] text-slate-400 font-bold uppercase flex items-center gap-1">
-                        <Coins className="w-3 h-3" /> Currency
-                      </p>
-                      <p className="text-xs font-bold text-navy-deep mt-0.5">{agencyForm.currency}</p>
-                    </div>
+                  <div className="p-3.5 rounded-2xl bg-slate-50/80 dark:bg-slate-800/50 border border-slate-200/70 dark:border-slate-700/60">
+                    <p className="text-[10px] text-slate-400 font-bold uppercase flex items-center gap-1.5">
+                      <Clock className="w-3.5 h-3.5 text-cyan-500" /> Operational Timezone
+                    </p>
+                    <p className="text-xs font-bold text-slate-900 dark:text-white mt-1">
+                      {agencyForm.timezone}
+                    </p>
                   </div>
+                  <div className="p-3.5 rounded-2xl bg-slate-50/80 dark:bg-slate-800/50 border border-slate-200/70 dark:border-slate-700/60">
+                    <p className="text-[10px] text-slate-400 font-bold uppercase flex items-center gap-1.5">
+                      <Coins className="w-3.5 h-3.5 text-amber-500" /> Base Currency
+                    </p>
+                    <p className="text-xs font-bold text-slate-900 dark:text-white mt-1">{agencyForm.currency} (PKR)</p>
+                  </div>
+                </div>
 
-                  {role === "agency_owner" && (
-                    <div className="flex justify-end pt-2">
-                      <Button type="submit" size="sm" isLoading={isSaving}>
-                        Save Agency Profile
-                      </Button>
-                    </div>
-                  )}
-                </form>
-              </CardContent>
-            </Card>
+                {role === "agency_owner" && (
+                  <div className="flex justify-end pt-3">
+                    <Button
+                      type="submit"
+                      size="sm"
+                      isLoading={isSaving}
+                      className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold"
+                    >
+                      Save Agency Profile
+                    </Button>
+                  </div>
+                )}
+              </form>
+            </div>
 
             {/* Data Export Card */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-sm">Data Export & Backup</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <p className="text-xs text-text-secondary leading-relaxed">
-                  Download a complete tenant-scoped CSV spreadsheet containing your current
-                  leads, contacts, budget parameters, and stage history.
-                </p>
-                <Button onClick={handleExportAllData} variant="outline" size="sm">
-                  <Download className="w-3.5 h-3.5 mr-1.5" /> Export All Agency Leads (.CSV)
-                </Button>
-              </CardContent>
-            </Card>
+            <div className="glass-panel rounded-3xl p-6 border border-slate-200/80 dark:border-slate-800/80 bg-white/70 dark:bg-slate-900/80 shadow-sm space-y-3">
+              <h2 className="text-base font-bold text-slate-900 dark:text-white">Data Export & Compliance Backup</h2>
+              <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                Generate an immediate tenant-scoped CSV spreadsheet containing your current leads, contacts,
+                budget parameters, and deal history for offsite auditing.
+              </p>
+              <Button
+                onClick={handleExportAllData}
+                variant="outline"
+                size="sm"
+                className="font-semibold rounded-xl border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800"
+              >
+                <Download className="w-3.5 h-3.5 mr-2 text-indigo-500" /> Export All Agency Leads (.CSV)
+              </Button>
+            </div>
           </div>
 
+          {/* User Session Side Panel */}
           <div className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-sm">Your User Session</CardTitle>
-              </CardHeader>
-              <CardContent className="text-xs space-y-2">
-                <div className="flex justify-between py-1 border-b border-slate-100">
-                  <span className="text-slate-500">Name:</span>
-                  <span className="font-bold text-navy-deep">{user.fullName}</span>
+            <div className="glass-panel rounded-3xl p-6 border border-slate-200/80 dark:border-slate-800/80 bg-white/70 dark:bg-slate-900/80 shadow-sm">
+              <h2 className="text-sm font-bold text-slate-900 dark:text-white mb-4">Authenticated Session</h2>
+              <div className="text-xs space-y-3">
+                <div className="flex justify-between py-2 border-b border-slate-100 dark:border-slate-800">
+                  <span className="text-slate-500 dark:text-slate-400">Name:</span>
+                  <span className="font-bold text-slate-900 dark:text-white">{user.fullName}</span>
                 </div>
-                <div className="flex justify-between py-1 border-b border-slate-100">
-                  <span className="text-slate-500">Email:</span>
-                  <span className="text-slate-700">{user.email}</span>
+                <div className="flex justify-between py-2 border-b border-slate-100 dark:border-slate-800">
+                  <span className="text-slate-500 dark:text-slate-400">Email:</span>
+                  <span className="text-slate-700 dark:text-slate-300 font-medium">{user.email}</span>
                 </div>
-                <div className="flex justify-between py-1 border-b border-slate-100">
-                  <span className="text-slate-500">Your Role:</span>
-                  <span className="font-bold text-primary">{ROLE_LABELS[role]}</span>
+                <div className="flex justify-between py-2 border-b border-slate-100 dark:border-slate-800">
+                  <span className="text-slate-500 dark:text-slate-400">Assigned Role:</span>
+                  <span className="font-bold text-indigo-600 dark:text-indigo-400">{ROLE_LABELS[role]}</span>
                 </div>
-                <div className="flex justify-between py-1">
-                  <span className="text-slate-500">Tenant ID:</span>
-                  <span className="font-mono text-[10px] text-slate-400">{organization.id}</span>
+                <div className="flex justify-between py-2">
+                  <span className="text-slate-500 dark:text-slate-400">Tenant ID:</span>
+                  <span className="font-mono text-[10px] text-slate-400 truncate max-w-[150px]">{organization.id}</span>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
+
+            <div className="glass-card p-5 rounded-2xl border border-indigo-200/60 dark:border-indigo-800/60 bg-indigo-50/40 dark:bg-indigo-950/30">
+              <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-bold text-xs mb-1.5">
+                <Lock className="w-3.5 h-3.5" />
+                <span>Supabase RLS Protected</span>
+              </div>
+              <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
+                All data queries are secured with Row Level Security enforcing strict multi-tenant boundary checks.
+              </p>
+            </div>
           </div>
         </div>
       )}
 
       {/* Tab 2: Pipeline Stages */}
       {activeTab === "pipeline" && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-sm">Standard 10-Stage Real Estate Funnel</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <p className="text-xs text-text-secondary leading-relaxed mb-4">
-              The CRM enforces a standard 10-stage pipeline optimized for property sales cycles in
-              Pakistan.
+        <div className="glass-panel rounded-3xl p-6 sm:p-8 border border-slate-200/80 dark:border-slate-800/80 bg-white/70 dark:bg-slate-900/80 shadow-sm space-y-4">
+          <div>
+            <h2 className="text-base font-bold text-slate-900 dark:text-white">10-Stage Real Estate Funnel</h2>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
+              PropTech CRM enforces a standard 10-stage pipeline optimized specifically for property sales cycles in Pakistan and international markets.
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {Object.entries(STAGE_CONFIG).map(([key, cfg], idx) => (
-                <div
-                  key={key}
-                  className="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between text-xs"
-                >
-                  <div className="flex items-center gap-2">
-                    <span className="w-5 h-5 rounded-full bg-slate-200 text-slate-700 font-bold text-[10px] flex items-center justify-center">
-                      {idx + 1}
-                    </span>
-                    <span className="font-bold text-navy-deep">{cfg.label}</span>
-                  </div>
-                  <span
-                    className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${cfg.bg} ${cfg.color} ${cfg.border}`}
-                  >
-                    Active
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-3">
+            {Object.entries(STAGE_CONFIG).map(([key, cfg], idx) => (
+              <div
+                key={key}
+                className="p-3.5 rounded-2xl bg-slate-50/70 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-700/60 flex items-center justify-between text-xs"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold text-[11px] flex items-center justify-center">
+                    {idx + 1}
                   </span>
+                  <span className="font-bold text-slate-900 dark:text-white">{cfg.label}</span>
                 </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+                <span
+                  className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${cfg.bg} ${cfg.color} ${cfg.border}`}
+                >
+                  Active Funnel
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
       )}
 
       {/* Tab 3: Integrations Roadmap */}
       {activeTab === "integrations" && (
-        <div className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-sm">Planned Future Integrations (Phase 2)</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <p className="text-xs text-text-secondary leading-relaxed">
-                As required by the Phase 1 MVP architecture, third-party messaging and AI APIs are
-                reserved for subsequent releases. No unverified third-party bots or fake connected
-                accounts are enabled.
-              </p>
+        <div className="glass-panel rounded-3xl p-6 sm:p-8 border border-slate-200/80 dark:border-slate-800/80 bg-white/70 dark:bg-slate-900/80 shadow-sm space-y-6">
+          <div>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200/60 dark:border-indigo-800/50 text-[11px] font-bold text-indigo-700 dark:text-indigo-400 mb-2">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Modular Architecture Boundaries</span>
+            </div>
+            <h2 className="text-base font-bold text-slate-900 dark:text-white">Future Integrations Roadmap (Phase 2)</h2>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
+              As required by Phase 1 MVP design guidelines, third-party messaging bots and LLM APIs are preserved behind clean interfaces without mock or fake integrations.
+            </p>
+          </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
-                <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="font-bold text-xs text-navy-deep">WhatsApp Cloud API</span>
-                    <Badge variant="outline" className="text-[10px]">
-                      Phase 2
-                    </Badge>
-                  </div>
-                  <p className="text-[11px] text-slate-500 leading-relaxed">
-                    Official Meta WhatsApp Business Cloud API for lead notifications and catalog
-                    sharing.
-                  </p>
-                </div>
-
-                <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="font-bold text-xs text-navy-deep">Meta Lead Ads Webhook</span>
-                    <Badge variant="outline" className="text-[10px]">
-                      Phase 2
-                    </Badge>
-                  </div>
-                  <p className="text-[11px] text-slate-500 leading-relaxed">
-                    Direct real-time webhook sync for Facebook & Instagram real estate campaigns.
-                  </p>
-                </div>
-
-                <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="font-bold text-xs text-navy-deep">AI Qualification Engine</span>
-                    <Badge variant="outline" className="text-[10px]">
-                      Phase 2
-                    </Badge>
-                  </div>
-                  <p className="text-[11px] text-slate-500 leading-relaxed">
-                    Future modular intelligence layer for buyer budget scoring and smart matching.
-                  </p>
-                </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+            <div className="glass-card p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800/80 bg-white/60 dark:bg-slate-900/70 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="font-bold text-xs text-slate-900 dark:text-white">WhatsApp Cloud API</span>
+                <Badge variant="outline" className="text-[10px] border-indigo-300 text-indigo-600 dark:text-indigo-400">
+                  Phase 2
+                </Badge>
               </div>
-            </CardContent>
-          </Card>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">
+                Official Meta WhatsApp Business Cloud API for automated client notifications and catalog sharing.
+              </p>
+            </div>
+
+            <div className="glass-card p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800/80 bg-white/60 dark:bg-slate-900/70 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="font-bold text-xs text-slate-900 dark:text-white">Meta Lead Ads Webhook</span>
+                <Badge variant="outline" className="text-[10px] border-indigo-300 text-indigo-600 dark:text-indigo-400">
+                  Phase 2
+                </Badge>
+              </div>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">
+                Direct real-time webhook ingestion for Facebook & Instagram lead generation campaigns.
+              </p>
+            </div>
+
+            <div className="glass-card p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800/80 bg-white/60 dark:bg-slate-900/70 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="font-bold text-xs text-slate-900 dark:text-white">AI Qualification Engine</span>
+                <Badge variant="outline" className="text-[10px] border-indigo-300 text-indigo-600 dark:text-indigo-400">
+                  Phase 2
+                </Badge>
+              </div>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">
+                Future modular intelligence layer for buyer budget scoring and Marla-to-unit inventory matching.
+              </p>
+            </div>
+          </div>
         </div>
       )}
 
       {/* Tab 4: Audit Events */}
       {activeTab === "audit" && role === "agency_owner" && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-sm">Security & Activity Audit Log</CardTitle>
-          </CardHeader>
-          <CardContent className="p-0">
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse text-xs">
-                <thead>
-                  <tr className="border-b border-slate-200 bg-slate-50 text-slate-500 font-semibold">
-                    <th className="p-3 pl-6">Action</th>
-                    <th className="p-3">Target Entity</th>
-                    <th className="p-3">Actor Email</th>
-                    <th className="p-3">Details</th>
-                    <th className="p-3 pr-6 text-right">Timestamp</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100">
-                  {auditEvents.map((aud) => (
-                    <tr key={aud.id} className="hover:bg-slate-50">
-                      <td className="p-3 pl-6 font-bold text-navy-deep">
-                        <span className="px-2 py-0.5 rounded bg-slate-100 font-mono text-[11px]">
-                          {aud.action}
-                        </span>
-                      </td>
-                      <td className="p-3 capitalize text-slate-600">{aud.targetEntity}</td>
-                      <td className="p-3 text-slate-700">{aud.actorEmail || "System"}</td>
-                      <td className="p-3 text-slate-500 max-w-xs truncate">
-                        {aud.metadata ? JSON.stringify(aud.metadata) : "—"}
-                      </td>
-                      <td className="p-3 pr-6 text-right text-slate-400 whitespace-nowrap">
-                        {formatDateTime(aud.createdAt)}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+        <div className="glass-panel rounded-3xl border border-slate-200/80 dark:border-slate-800/80 bg-white/70 dark:bg-slate-900/80 overflow-hidden shadow-sm">
+          <div className="p-6 border-b border-slate-200/80 dark:border-slate-800/80 flex items-center justify-between">
+            <div>
+              <h2 className="text-base font-bold text-slate-900 dark:text-white">Security & Activity Audit Log</h2>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                Immutable audit trail of pipeline changes, appointments created, and team actions
+              </p>
             </div>
-          </CardContent>
-        </Card>
+            <span className="px-3 py-1 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+              {auditEvents.length} Events Logged
+            </span>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse text-xs">
+              <thead>
+                <tr className="border-b border-slate-200/80 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-800/40 text-slate-400 dark:text-slate-400 uppercase text-[10px] font-bold tracking-wider">
+                  <th className="p-4 pl-6">Action</th>
+                  <th className="p-4">Target Entity</th>
+                  <th className="p-4">Actor Email</th>
+                  <th className="p-4">Details</th>
+                  <th className="p-4 pr-6 text-right">Timestamp</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60">
+                {auditEvents.map((aud) => (
+                  <tr key={aud.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
+                    <td className="p-4 pl-6 font-bold text-slate-900 dark:text-white">
+                      <span className="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 font-mono text-[11px] text-indigo-600 dark:text-indigo-400 border border-slate-200/60 dark:border-slate-700/60">
+                        {aud.action}
+                      </span>
+                    </td>
+                    <td className="p-4 capitalize text-slate-600 dark:text-slate-300">{aud.targetEntity}</td>
+                    <td className="p-4 text-slate-700 dark:text-slate-300 font-medium">{aud.actorEmail || "System"}</td>
+                    <td className="p-4 text-slate-500 dark:text-slate-400 max-w-xs truncate font-mono text-[11px]">
+                      {aud.metadata ? JSON.stringify(aud.metadata) : "—"}
+                    </td>
+                    <td className="p-4 pr-6 text-right text-slate-400 whitespace-nowrap">
+                      {formatDateTime(aud.createdAt)}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
       )}
     </div>
   );

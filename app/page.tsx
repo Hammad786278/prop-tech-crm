@@ -7,6 +7,7 @@ import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { RoiCalculator } from "@/components/landing/roi-calculator";
 import { InteractivePipelinePreview } from "@/components/landing/interactive-pipeline-preview";
+import { MarlaCalculator } from "@/components/landing/marla-calculator";
 import {
   TrendingUp,
   Building2,
@@ -30,11 +31,13 @@ import {
   Star,
   FileSpreadsheet,
   Globe,
+  Calculator,
 } from "lucide-react";
 
 export default function LandingPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeFaq, setActiveFaq] = useState<number | null>(0);
+  const [activeInteractiveTool, setActiveInteractiveTool] = useState<"pipeline" | "marla" | "roi">("pipeline");
 
   const faqs = [
     {
@@ -56,7 +59,7 @@ export default function LandingPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] dark:bg-[#070B14] text-slate-900 dark:text-slate-100 selection:bg-primary selection:text-white transition-colors duration-200">
+    <div className="min-h-screen bg-[#F8FAFC] dark:bg-[#060911] text-slate-900 dark:text-slate-100 selection:bg-primary selection:text-white transition-colors duration-200 relative bg-grid-pattern">
       {/* Glow ambient background elements */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
         <div className="absolute -top-40 -left-40 w-96 h-96 bg-indigo-500/10 dark:bg-indigo-600/15 rounded-full blur-3xl" />
@@ -65,7 +68,7 @@ export default function LandingPage() {
       </div>
 
       {/* Top Sticky Navigation */}
-      <header className="sticky top-0 z-40 bg-white/90 dark:bg-[#070B14]/90 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 transition-colors">
+      <header className="sticky top-0 z-40 bg-white/85 dark:bg-[#060911]/85 backdrop-blur-xl border-b border-slate-200/80 dark:border-white/8 transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
           <Logo variant="full" showTagline />
 
@@ -75,10 +78,7 @@ export default function LandingPage() {
               Features
             </a>
             <a href="#pipeline" className="hover:text-primary dark:hover:text-cyan transition-colors">
-              Pipeline
-            </a>
-            <a href="#calculator" className="hover:text-primary dark:hover:text-cyan transition-colors">
-              ROI Calculator
+              Interactive Tools
             </a>
             <a href="#testimonials" className="hover:text-primary dark:hover:text-cyan transition-colors">
               Agencies
@@ -100,7 +100,7 @@ export default function LandingPage() {
               </Button>
             </Link>
             <Link href="/dashboard">
-              <Button variant="primary" size="sm" className="shadow-md shadow-indigo-500/25">
+              <Button variant="primary" size="sm" className="shadow-md shadow-indigo-600/25">
                 Launch CRM <ArrowRight className="w-4 h-4 ml-1.5" />
               </Button>
             </Link>
@@ -111,7 +111,7 @@ export default function LandingPage() {
             <ThemeToggle />
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+              className="p-2 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors"
               aria-label="Toggle Menu"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -121,7 +121,7 @@ export default function LandingPage() {
 
         {/* Mobile Dropdown Menu */}
         {mobileMenuOpen && (
-          <div className="sm:hidden border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-6 py-6 space-y-4 shadow-xl animate-in slide-in-from-top-2">
+          <div className="sm:hidden border-b border-slate-200 dark:border-white/10 bg-white dark:bg-[#0D1322] px-6 py-6 space-y-4 shadow-xl animate-in slide-in-from-top-2">
             <nav className="flex flex-col space-y-3 text-base font-semibold text-slate-700 dark:text-slate-200">
               <a
                 href="#features"
@@ -135,14 +135,7 @@ export default function LandingPage() {
                 onClick={() => setMobileMenuOpen(false)}
                 className="hover:text-primary"
               >
-                Sales Pipeline
-              </a>
-              <a
-                href="#calculator"
-                onClick={() => setMobileMenuOpen(false)}
-                className="hover:text-primary"
-              >
-                ROI Calculator
+                Interactive Tools
               </a>
               <a
                 href="#testimonials"
@@ -166,7 +159,7 @@ export default function LandingPage() {
                 Contact & Book Demo
               </Link>
             </nav>
-            <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex flex-col gap-2">
+            <div className="pt-4 border-t border-slate-100 dark:border-white/8 flex flex-col gap-2">
               <Link href="/login" className="w-full">
                 <Button variant="outline" className="w-full">
                   Sign In
@@ -201,13 +194,13 @@ export default function LandingPage() {
 
           {/* Subtitle */}
           <p className="text-base sm:text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
-            The ultra-premium CRM built for real estate agencies, housing consultants, and sales managers. Unify Marla & Kanal inventory, visual Kanban stages, WhatsApp inquiries, and commission splits in one platform.
+            The ultra-premium CRM built for real estate brokerages, housing consultants, and property inventory managers. Unify Marla & Kanal inventory, visual Kanban stages, WhatsApp inquiries, and commission splits in one platform.
           </p>
 
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 pt-4">
             <Link href="/dashboard" className="w-full sm:w-auto">
-              <Button variant="primary" size="lg" className="w-full sm:w-auto shadow-lg shadow-indigo-500/30">
+              <Button variant="primary" size="lg" className="w-full sm:w-auto shadow-lg shadow-indigo-600/30">
                 Launch Live Demo <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </Link>
@@ -221,7 +214,7 @@ export default function LandingPage() {
 
           {/* Trust Ticker Badges */}
           <div className="pt-8 grid grid-cols-2 sm:grid-cols-4 gap-4 text-left max-w-3xl mx-auto">
-            <div className="p-3 rounded-2xl bg-white/70 dark:bg-slate-900/60 backdrop-blur-sm border border-slate-200/80 dark:border-slate-800">
+            <div className="p-3.5 rounded-2xl bg-white/70 dark:bg-slate-900/60 backdrop-blur-sm border border-slate-200/80 dark:border-white/8 shadow-2xs">
               <span className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white block">
                 PKR 48.5B+
               </span>
@@ -229,7 +222,7 @@ export default function LandingPage() {
                 Inventory Managed
               </span>
             </div>
-            <div className="p-3 rounded-2xl bg-white/70 dark:bg-slate-900/60 backdrop-blur-sm border border-slate-200/80 dark:border-slate-800">
+            <div className="p-3.5 rounded-2xl bg-white/70 dark:bg-slate-900/60 backdrop-blur-sm border border-slate-200/80 dark:border-white/8 shadow-2xs">
               <span className="text-xl sm:text-2xl font-black text-primary dark:text-cyan block">
                 450+
               </span>
@@ -237,7 +230,7 @@ export default function LandingPage() {
                 Active Brokerages
               </span>
             </div>
-            <div className="p-3 rounded-2xl bg-white/70 dark:bg-slate-900/60 backdrop-blur-sm border border-slate-200/80 dark:border-slate-800">
+            <div className="p-3.5 rounded-2xl bg-white/70 dark:bg-slate-900/60 backdrop-blur-sm border border-slate-200/80 dark:border-white/8 shadow-2xs">
               <span className="text-xl sm:text-2xl font-black text-emerald-600 dark:text-emerald-400 block">
                 38%
               </span>
@@ -245,7 +238,7 @@ export default function LandingPage() {
                 Faster Conversion
               </span>
             </div>
-            <div className="p-3 rounded-2xl bg-white/70 dark:bg-slate-900/60 backdrop-blur-sm border border-slate-200/80 dark:border-slate-800">
+            <div className="p-3.5 rounded-2xl bg-white/70 dark:bg-slate-900/60 backdrop-blur-sm border border-slate-200/80 dark:border-white/8 shadow-2xs">
               <span className="text-xl sm:text-2xl font-black text-amber-500 block">
                 99.98%
               </span>
@@ -256,17 +249,65 @@ export default function LandingPage() {
           </div>
         </div>
 
-        {/* Live Interactive CRM Pipeline Preview */}
-        <div id="pipeline" className="mt-16 sm:mt-24 scroll-mt-24">
-          <div className="text-center mb-6">
-            <span className="text-xs font-bold uppercase tracking-wider text-primary dark:text-cyan">
+        {/* Live Interactive CRM Suite & Tab Switcher */}
+        <div id="pipeline" className="mt-16 sm:mt-24 scroll-mt-24 max-w-6xl mx-auto">
+          <div className="text-center mb-8">
+            <span className="text-xs font-black uppercase tracking-wider text-primary dark:text-cyan">
               Interactive System Preview
             </span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-1">
-              Visual Real Estate Sales Engine
+            <h2 className="text-2xl sm:text-4xl font-black text-slate-900 dark:text-white mt-1">
+              Experience The Regional Real Estate Engine
             </h2>
+            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-2">
+              Select an interactive demo tool below to see live calculations and workflows in action.
+            </p>
+
+            {/* Pill Tab Switcher */}
+            <div className="mt-6 inline-flex p-1.5 rounded-2xl bg-slate-200/80 dark:bg-white/[0.06] border border-slate-300/80 dark:border-white/10 gap-1.5 shadow-inner">
+              <button
+                onClick={() => setActiveInteractiveTool("pipeline")}
+                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+                  activeInteractiveTool === "pipeline"
+                    ? "bg-white dark:bg-indigo-600 text-navy-deep dark:text-white shadow-md"
+                    : "text-slate-600 dark:text-slate-300 hover:text-navy-deep dark:hover:text-white"
+                }`}
+              >
+                <Kanban className="w-3.5 h-3.5 text-primary dark:text-cyan" />
+                Sales Pipeline
+              </button>
+
+              <button
+                onClick={() => setActiveInteractiveTool("marla")}
+                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+                  activeInteractiveTool === "marla"
+                    ? "bg-white dark:bg-indigo-600 text-navy-deep dark:text-white shadow-md"
+                    : "text-slate-600 dark:text-slate-300 hover:text-navy-deep dark:hover:text-white"
+                }`}
+              >
+                <Calculator className="w-3.5 h-3.5 text-amber-500" />
+                Marla & Kanal Engine
+              </button>
+
+              <button
+                onClick={() => setActiveInteractiveTool("roi")}
+                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+                  activeInteractiveTool === "roi"
+                    ? "bg-white dark:bg-indigo-600 text-navy-deep dark:text-white shadow-md"
+                    : "text-slate-600 dark:text-slate-300 hover:text-navy-deep dark:hover:text-white"
+                }`}
+              >
+                <TrendingUp className="w-3.5 h-3.5 text-emerald-500" />
+                Commission ROI Calculator
+              </button>
+            </div>
           </div>
-          <InteractivePipelinePreview />
+
+          {/* Dynamic Active Tool Renderer */}
+          <div className="transition-all duration-300">
+            {activeInteractiveTool === "pipeline" && <InteractivePipelinePreview />}
+            {activeInteractiveTool === "marla" && <MarlaCalculator />}
+            {activeInteractiveTool === "roi" && <RoiCalculator />}
+          </div>
         </div>
       </section>
 
@@ -365,9 +406,89 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Interactive ROI Calculator Section */}
-      <section id="calculator" className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto scroll-mt-20">
-        <RoiCalculator />
+      {/* Regional Real Estate Coverage Matrix */}
+      <section id="coverage" className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto scroll-mt-20">
+        <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
+          <span className="text-xs font-bold uppercase tracking-wider text-primary dark:text-cyan">
+            Regional Society Intelligence
+          </span>
+          <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-slate-900 dark:text-white">
+            Pre-Configured For Prime Real Estate Sectors
+          </h2>
+          <p className="text-base text-slate-600 dark:text-slate-400">
+            PropTech CRM comes pre-loaded with society zoning standards, land dimensions, and currency units for all major metropolitan areas.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* Karachi Hub */}
+          <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/90 border border-slate-200/80 dark:border-white/8 shadow-sm hover:shadow-xl transition-all group">
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-xs font-bold text-primary dark:text-cyan uppercase tracking-wider">Sindh Hub</span>
+              <span className="px-2 py-0.5 rounded-full bg-indigo-500/10 text-primary dark:text-cyan text-[10px] font-extrabold">Sq Yds (Gaz)</span>
+            </div>
+            <h3 className="text-xl font-black text-slate-900 dark:text-white mb-2">Karachi Coastal</h3>
+            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed mb-4">
+              Clifton Blocks, DHA Phases 1–8, Emaar Crescent Bay, and Bahria Town Karachi.
+            </p>
+            <div className="space-y-1.5 pt-3 border-t border-slate-100 dark:border-white/5 text-[11px] font-semibold text-slate-600 dark:text-slate-300">
+              <p className="flex items-center gap-1.5">✓ High-Rise Seafront Apartments</p>
+              <p className="flex items-center gap-1.5">✓ 500 & 1000 Sq Yd Luxury Plots</p>
+              <p className="flex items-center gap-1.5">✓ Commercial Showrooms & Plazas</p>
+            </div>
+          </div>
+
+          {/* Lahore Hub */}
+          <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/90 border border-slate-200/80 dark:border-white/8 shadow-sm hover:shadow-xl transition-all group">
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-xs font-bold text-amber-500 uppercase tracking-wider">Punjab Hub</span>
+              <span className="px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 dark:text-gold text-[10px] font-extrabold">225 Sq Ft / Marla</span>
+            </div>
+            <h3 className="text-xl font-black text-slate-900 dark:text-white mb-2">Lahore Metropolis</h3>
+            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed mb-4">
+              DHA Lahore Phases 5 to 9 Prism, Gulberg III, Lake City, and Bahria Town Lahore.
+            </p>
+            <div className="space-y-1.5 pt-3 border-t border-slate-100 dark:border-white/5 text-[11px] font-semibold text-slate-600 dark:text-slate-300">
+              <p className="flex items-center gap-1.5">✓ 1 & 2 Kanal Designer Villas</p>
+              <p className="flex items-center gap-1.5">✓ 10 Marla Constructed Houses</p>
+              <p className="flex items-center gap-1.5">✓ Commercial Main Boulevard Plots</p>
+            </div>
+          </div>
+
+          {/* Islamabad Hub */}
+          <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/90 border border-slate-200/80 dark:border-white/8 shadow-sm hover:shadow-xl transition-all group">
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-xs font-bold text-emerald-500 uppercase tracking-wider">Federal Capital</span>
+              <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[10px] font-extrabold">CDA & Revenue</span>
+            </div>
+            <h3 className="text-xl font-black text-slate-900 dark:text-white mb-2">Islamabad / Twin Cities</h3>
+            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed mb-4">
+              Blue Area Corporate, Sectors F-6/F-7/F-8, DHA Islamabad, and Bahria Phase 8.
+            </p>
+            <div className="space-y-1.5 pt-3 border-t border-slate-100 dark:border-white/5 text-[11px] font-semibold text-slate-600 dark:text-slate-300">
+              <p className="flex items-center gap-1.5">✓ Diplomatic Enclave & F Sectors</p>
+              <p className="flex items-center gap-1.5">✓ Corporate Tower Office Spaces</p>
+              <p className="flex items-center gap-1.5">✓ Expressway Mega-Developments</p>
+            </div>
+          </div>
+
+          {/* Dubai & Overseas Hub */}
+          <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/90 border border-slate-200/80 dark:border-white/8 shadow-sm hover:shadow-xl transition-all group">
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-xs font-bold text-cyan uppercase tracking-wider">GCC Corridor</span>
+              <span className="px-2 py-0.5 rounded-full bg-cyan/10 text-cyan text-[10px] font-extrabold">AED & USD Multi-Curr</span>
+            </div>
+            <h3 className="text-xl font-black text-slate-900 dark:text-white mb-2">Overseas Investor Desk</h3>
+            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed mb-4">
+              Cross-border investment tracking for Pakistani expatriates in UAE, UK, and North America.
+            </p>
+            <div className="space-y-1.5 pt-3 border-t border-slate-100 dark:border-white/5 text-[11px] font-semibold text-slate-600 dark:text-slate-300">
+              <p className="flex items-center gap-1.5">✓ Multi-Currency Valuation Matrix</p>
+              <p className="flex items-center gap-1.5">✓ Overseas WhatsApp Inquiry Sync</p>
+              <p className="flex items-center gap-1.5">✓ Remote Power of Attorney Tracking</p>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* Verified Agency Testimonials */}

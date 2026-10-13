@@ -133,23 +133,28 @@ export function TasksClient({
   return (
     <div className="space-y-6">
       {/* Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="glass-panel p-6 rounded-3xl border border-slate-200/90 dark:border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm">
         <div>
-          <h1 className="text-2xl font-black text-navy-deep tracking-tight">
-            Schedule & Task Management
-          </h1>
-          <p className="text-xs text-text-secondary mt-1">
-            Site visit bookings, office reviews, and action items in Asia/Karachi timezone.
+          <div className="flex items-center gap-2.5">
+            <h1 className="text-2xl font-black text-navy-deep dark:text-white tracking-tight">
+              Schedule & Agenda Cockpit
+            </h1>
+            <span className="px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 font-extrabold text-xs border border-amber-500/20">
+              Asia/Karachi
+            </span>
+          </div>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+            Site visit bookings, property walkthroughs, and action items.
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2.5">
           {activeTab === "appointments" ? (
-            <Button onClick={() => setIsApptModalOpen(true)} size="sm">
+            <Button onClick={() => setIsApptModalOpen(true)} size="sm" variant="primary" className="shadow-md shadow-indigo-600/25">
               <Plus className="w-4 h-4 mr-1.5" /> Book Site Visit
             </Button>
           ) : (
-            <Button onClick={() => setIsTaskModalOpen(true)} size="sm">
+            <Button onClick={() => setIsTaskModalOpen(true)} size="sm" variant="primary" className="shadow-md shadow-indigo-600/25">
               <Plus className="w-4 h-4 mr-1.5" /> New Task
             </Button>
           )}
@@ -157,26 +162,26 @@ export function TasksClient({
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-2 border-b border-slate-200">
+      <div className="inline-flex p-1.5 rounded-2xl bg-slate-200/70 dark:bg-white/[0.06] border border-slate-300/70 dark:border-white/8 gap-1.5 shadow-inner">
         <button
           onClick={() => setActiveTab("appointments")}
-          className={`px-5 py-3 text-xs font-bold border-b-2 transition-colors flex items-center gap-2 ${
+          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
             activeTab === "appointments"
-              ? "border-primary text-primary"
-              : "border-transparent text-slate-500 hover:text-slate-900"
+              ? "bg-white dark:bg-indigo-600 text-navy-deep dark:text-white shadow-md"
+              : "text-slate-600 dark:text-slate-300 hover:text-navy-deep dark:hover:text-white"
           }`}
         >
-          <CalendarCheck className="w-4 h-4" /> Site Visits & Appointments ({appointments.length})
+          <CalendarCheck className="w-4 h-4 text-primary dark:text-cyan" /> Site Visits & Meetings ({appointments.length})
         </button>
         <button
           onClick={() => setActiveTab("tasks")}
-          className={`px-5 py-3 text-xs font-bold border-b-2 transition-colors flex items-center gap-2 ${
+          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
             activeTab === "tasks"
-              ? "border-primary text-primary"
-              : "border-transparent text-slate-500 hover:text-slate-900"
+              ? "bg-white dark:bg-indigo-600 text-navy-deep dark:text-white shadow-md"
+              : "text-slate-600 dark:text-slate-300 hover:text-navy-deep dark:hover:text-white"
           }`}
         >
-          <CheckCircle2 className="w-4 h-4" /> Action Tasks ({tasks.length})
+          <CheckCircle2 className="w-4 h-4 text-emerald-500" /> Action Items ({tasks.length})
         </button>
       </div>
 
@@ -194,28 +199,28 @@ export function TasksClient({
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {appointments.map((appt) => (
-                <Card key={appt.id} className="p-5 space-y-3 hover:shadow-premium transition-all">
+                <div key={appt.id} className="glass-card p-5 rounded-3xl space-y-3 hover:shadow-xl dark:hover:shadow-[0_15px_35px_rgba(0,0,0,0.6)] hover:border-indigo-500/50 dark:hover:border-indigo-400/50 transition-all">
                   <div className="flex items-start justify-between">
                     <div>
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-indigo-50 text-primary border border-indigo-100 uppercase">
+                      <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-indigo-500/10 text-primary dark:text-cyan border border-indigo-500/20 uppercase">
                         {appt.appointmentType}
                       </span>
-                      <h3 className="text-sm font-bold text-navy-deep mt-1.5">{appt.title}</h3>
+                      <h3 className="text-sm font-extrabold text-navy-deep dark:text-white mt-1.5">{appt.title}</h3>
                     </div>
                     <span
-                      className={`text-xs px-2.5 py-0.5 rounded-full font-bold capitalize ${
+                      className={`text-[11px] px-2.5 py-0.5 rounded-full font-bold capitalize ${
                         appt.status === "scheduled"
-                          ? "bg-amber-50 text-amber-700"
-                          : "bg-emerald-50 text-emerald-700"
+                          ? "bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20"
+                          : "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20"
                       }`}
                     >
                       {appt.status}
                     </span>
                   </div>
 
-                  <div className="space-y-1.5 text-xs text-slate-600">
-                    <p className="flex items-center gap-1.5 font-semibold text-slate-800">
-                      <Clock className="w-3.5 h-3.5 text-amber-600" />
+                  <div className="space-y-1.5 text-xs text-slate-600 dark:text-slate-300">
+                    <p className="flex items-center gap-1.5 font-bold text-slate-800 dark:text-slate-200">
+                      <Clock className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
                       <span>
                         {formatDateTime(appt.startTime)} ({appt.durationMinutes} mins)
                       </span>
@@ -244,7 +249,7 @@ export function TasksClient({
                       </p>
                     )}
                   </div>
-                </Card>
+                </div>
               ))}
             </div>
           )}

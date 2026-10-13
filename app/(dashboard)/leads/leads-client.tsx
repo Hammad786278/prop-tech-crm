@@ -128,92 +128,97 @@ export function LeadsClient({
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="glass-panel p-6 rounded-3xl border border-slate-200/90 dark:border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm">
         <div>
-          <h1 className="text-2xl font-black text-navy-deep tracking-tight">Leads & Inquiries</h1>
-          <p className="text-xs text-text-secondary mt-1">
+          <div className="flex items-center gap-2.5">
+            <h1 className="text-2xl font-black text-navy-deep dark:text-white tracking-tight">
+              Leads & Inquiries Registry
+            </h1>
+            <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-extrabold text-xs border border-emerald-500/20">
+              {total} Inquiries
+            </span>
+          </div>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
             Track inquiries, buyer requirements, and assigned agents across all sales stages.
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2.5">
           {role !== "sales_agent" && (
             <Button onClick={() => setIsImportOpen(true)} variant="secondary" size="sm">
-              <Upload className="w-3.5 h-3.5 mr-1.5" /> Import CSV
+              <Upload className="w-3.5 h-3.5 mr-1.5 text-primary dark:text-cyan" /> Import CSV
             </Button>
           )}
           <Button onClick={handleExportCSV} variant="outline" size="sm">
             <Download className="w-3.5 h-3.5 mr-1.5" /> Export CSV
           </Button>
-          <Button onClick={() => setIsAddLeadOpen(true)} size="sm">
+          <Button onClick={() => setIsAddLeadOpen(true)} size="sm" variant="primary" className="shadow-md shadow-indigo-600/25">
             <Plus className="w-4 h-4 mr-1.5" /> Add Lead
           </Button>
         </div>
       </div>
 
       {/* Filters Bar */}
-      <Card>
-        <CardContent className="p-4">
-          <form
-            onSubmit={handleFilterSubmit}
-            className="flex flex-col md:flex-row items-center gap-3"
-          >
-            <div className="relative flex-1 w-full">
-              <Search className="absolute left-3 top-2.5 w-4 h-4 text-slate-400" />
-              <input
-                type="text"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search inquiries, client names, or properties..."
-                className="w-full pl-9 pr-4 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:bg-white"
-              />
-            </div>
+      <div className="glass-panel p-4 rounded-3xl border border-slate-200/90 dark:border-white/10 shadow-xs">
+        <form
+          onSubmit={handleFilterSubmit}
+          className="flex flex-col md:flex-row items-center gap-3"
+        >
+          <div className="relative flex-1 w-full">
+            <Search className="absolute left-3.5 top-2.5 w-4 h-4 text-slate-400" />
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search inquiries, client names, or properties..."
+              className="w-full pl-9 pr-4 py-2 text-xs bg-slate-50 dark:bg-white/[0.04] border border-slate-200 dark:border-white/10 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary shadow-2xs"
+            />
+          </div>
 
-            <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
-              {/* Stage Filter */}
-              <select
-                value={stage}
-                onChange={(e) => setStage(e.target.value)}
-                className="h-9 px-3 text-xs bg-white border border-slate-300 rounded-lg text-slate-700"
-              >
-                <option value="all">All Stages</option>
-                <option value="new_lead">New Lead</option>
-                <option value="contact_in_progress">Contact in Progress</option>
-                <option value="contacted_qualified">Contacted / Qualified</option>
-                <option value="visit_scheduled">Visit Scheduled</option>
-                <option value="site_visit_completed">Site Visit Completed</option>
-                <option value="negotiation">Negotiation</option>
-                <option value="booking_deposit_pending">Booking / Deposit Pending</option>
-                <option value="contract_issued">Contract Issued</option>
-                <option value="closed_won">Closed Won</option>
-                <option value="closed_lost">Closed Lost</option>
-              </select>
+          <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
+            {/* Stage Filter */}
+            <select
+              value={stage}
+              onChange={(e) => setStage(e.target.value)}
+              className="h-9 px-3 text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-xl text-slate-800 dark:text-slate-200 focus:outline-none"
+            >
+              <option value="all">All Stages</option>
+              <option value="new_lead">New Lead</option>
+              <option value="contact_in_progress">Contact in Progress</option>
+              <option value="contacted_qualified">Contacted / Qualified</option>
+              <option value="visit_scheduled">Visit Scheduled</option>
+              <option value="site_visit_completed">Site Visit Completed</option>
+              <option value="negotiation">Negotiation</option>
+              <option value="booking_deposit_pending">Booking / Deposit Pending</option>
+              <option value="contract_issued">Contract Issued</option>
+              <option value="closed_won">Closed Won</option>
+              <option value="closed_lost">Closed Lost</option>
+            </select>
 
-              {/* Source Filter */}
-              <select
-                value={source}
-                onChange={(e) => setSource(e.target.value)}
-                className="h-9 px-3 text-xs bg-white border border-slate-300 rounded-lg text-slate-700"
-              >
-                <option value="all">All Sources</option>
-                <option value="Manual Entry">Manual Entry</option>
-                <option value="Website">Website</option>
-                <option value="Facebook">Facebook</option>
-                <option value="Instagram">Instagram</option>
-                <option value="Google">Google</option>
-                <option value="WhatsApp">WhatsApp</option>
-                <option value="Property Portal">Property Portal</option>
-                <option value="Referral">Referral</option>
-                <option value="Phone Call">Phone Call</option>
-              </select>
+            {/* Source Filter */}
+            <select
+              value={source}
+              onChange={(e) => setSource(e.target.value)}
+              className="h-9 px-3 text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-xl text-slate-800 dark:text-slate-200 focus:outline-none"
+            >
+              <option value="all">All Sources</option>
+              <option value="Manual Entry">Manual Entry</option>
+              <option value="Website">Website</option>
+              <option value="Facebook">Facebook</option>
+              <option value="Instagram">Instagram</option>
+              <option value="Google">Google</option>
+              <option value="WhatsApp">WhatsApp</option>
+              <option value="Property Portal">Property Portal</option>
+              <option value="Referral">Referral</option>
+              <option value="Phone Call">Phone Call</option>
+            </select>
 
-              <Button type="submit" variant="secondary" size="sm">
-                Filter
-              </Button>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
+            <Button type="submit" variant="secondary" size="sm">
+              Filter
+            </Button>
+          </div>
+        </form>
+      </div>
 
       {/* Leads Table */}
       {initialLeads.length === 0 ? (
@@ -229,31 +234,32 @@ export function LeadsClient({
           onAction={() => setIsAddLeadOpen(true)}
         />
       ) : (
-        <Card>
-          <CardContent className="p-0">
+        <div className="glass-panel rounded-3xl border border-slate-200/90 dark:border-white/10 shadow-sm overflow-hidden">
+          <div className="p-0">
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse text-xs">
                 <thead>
-                  <tr className="border-b border-slate-200 bg-slate-50/75 text-slate-500 font-semibold">
-                    <th className="p-3 pl-6">Inquiry Summary</th>
-                    <th className="p-3">Buyer Contact</th>
-                    <th className="p-3">Interested Property</th>
-                    <th className="p-3">Budget</th>
-                    <th className="p-3">Stage</th>
-                    <th className="p-3">Assigned Agent</th>
-                    <th className="p-3">Source</th>
-                    <th className="p-3 pr-6 text-right">Action</th>
+                  <tr className="border-b border-slate-100 dark:border-white/8 bg-slate-50/70 dark:bg-white/[0.02] text-slate-500 dark:text-slate-400 font-extrabold uppercase tracking-wider text-[10px]">
+                    <th className="p-3.5 pl-6">Inquiry Summary</th>
+                    <th className="p-3.5">Client & WhatsApp</th>
+                    <th className="p-3.5">Interested Property</th>
+                    <th className="p-3.5">Budget</th>
+                    <th className="p-3.5">Stage</th>
+                    <th className="p-3.5">Assigned Agent</th>
+                    <th className="p-3.5">Source</th>
+                    <th className="p-3.5 pr-6 text-right">Action</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100">
+                <tbody className="divide-y divide-slate-100 dark:divide-white/5">
                   {initialLeads.map((lead) => {
                     const st = STAGE_CONFIG[lead.stage];
+                    const cleanPhone = lead.contact?.phone.replace(/\D/g, "");
                     return (
-                      <tr key={lead.id} className="hover:bg-slate-50 transition-colors">
-                        <td className="p-3 pl-6">
+                      <tr key={lead.id} className="hover:bg-slate-50/80 dark:hover:bg-white/[0.04] transition-colors group">
+                        <td className="p-3.5 pl-6">
                           <Link
                             href={`/leads/${lead.id}`}
-                            className="font-bold text-navy-deep hover:text-primary transition-colors block text-sm max-w-xs truncate"
+                            className="font-extrabold text-navy-deep dark:text-white group-hover:text-primary dark:group-hover:text-cyan transition-colors block text-sm max-w-xs truncate"
                           >
                             {lead.title}
                           </Link>
@@ -261,57 +267,71 @@ export function LeadsClient({
                             Created {formatDate(lead.createdAt)}
                           </span>
                         </td>
-                        <td className="p-3">
+                        <td className="p-3.5">
                           {lead.contact ? (
                             <div>
-                              <p className="font-semibold text-slate-800">
+                              <p className="font-bold text-slate-900 dark:text-white">
                                 {lead.contact.firstName} {lead.contact.lastName}
                               </p>
-                              <p className="text-[11px] text-slate-500">{lead.contact.phone}</p>
+                              <div className="flex items-center gap-1.5 mt-0.5">
+                                <span className="text-[11px] text-slate-500 dark:text-slate-400 font-mono">{lead.contact.phone}</span>
+                                {cleanPhone && (
+                                  <a
+                                    href={`https://wa.me/${cleanPhone}`}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="p-1 rounded-md bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/20 transition-colors"
+                                    title="Open WhatsApp chat"
+                                  >
+                                    💬
+                                  </a>
+                                )}
+                              </div>
                             </div>
                           ) : (
                             <span className="text-slate-400">—</span>
                           )}
                         </td>
-                        <td className="p-3 max-w-[200px]">
+                        <td className="p-3.5 max-w-[200px]">
                           {lead.property ? (
                             <Link
                               href={`/properties/${lead.property.id}`}
-                              className="font-medium text-slate-700 hover:text-primary transition-colors block truncate"
+                              className="font-semibold text-slate-700 dark:text-slate-300 hover:text-primary dark:hover:text-cyan transition-colors block truncate"
                             >
-                              {lead.property.title}
+                              🏢 {lead.property.title}
                             </Link>
                           ) : (
                             <span className="text-slate-400">
-                              {lead.propertyTypePreference || "General"}
+                              {lead.propertyTypePreference || "General Project"}
                             </span>
                           )}
                         </td>
-                        <td className="p-3 font-semibold text-slate-800 whitespace-nowrap">
+                        <td className="p-3.5 font-extrabold text-navy-deep dark:text-white whitespace-nowrap">
                           {lead.budgetMax
                             ? formatCurrency(lead.budgetMax)
                             : lead.budgetMin
                             ? `Min: ${formatCurrency(lead.budgetMin)}`
                             : "Flexible"}
                         </td>
-                        <td className="p-3">
+                        <td className="p-3.5">
                           <span
-                            className={`px-2 py-0.5 rounded-full font-bold border whitespace-nowrap ${st?.bg} ${st?.color} ${st?.border}`}
+                            className={`px-2.5 py-1 rounded-full font-bold border whitespace-nowrap text-[11px] inline-flex items-center gap-1.5 ${st?.bg} ${st?.color} ${st?.border}`}
                           >
+                            <span className="w-1.5 h-1.5 rounded-full bg-current" />
                             {st?.label || lead.stage}
                           </span>
                         </td>
-                        <td className="p-3 text-slate-700 font-medium whitespace-nowrap">
+                        <td className="p-3.5 text-slate-700 dark:text-slate-300 font-medium whitespace-nowrap">
                           {lead.assignedAgent?.fullName || "Unassigned"}
                         </td>
-                        <td className="p-3">
-                          <span className="px-2 py-0.5 rounded bg-slate-100 text-slate-600 font-medium">
+                        <td className="p-3.5">
+                          <span className="px-2 py-0.5 rounded-md bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-slate-300 font-semibold text-[11px]">
                             {lead.source}
                           </span>
                         </td>
-                        <td className="p-3 pr-6 text-right">
+                        <td className="p-3.5 pr-6 text-right">
                           <Link href={`/leads/${lead.id}`}>
-                            <Button variant="ghost" size="sm" className="h-7 text-xs font-semibold">
+                            <Button variant="ghost" size="sm" className="h-7 text-xs font-bold hover:bg-slate-100 dark:hover:bg-white/10">
                               Details <ArrowRight className="w-3.5 h-3.5 ml-1" />
                             </Button>
                           </Link>
@@ -322,8 +342,8 @@ export function LeadsClient({
                 </tbody>
               </table>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       )}
 
       {/* CSV Import Modal */}

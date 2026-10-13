@@ -9,12 +9,13 @@ import {
   ArrowRight,
   TrendingUp,
   User,
-  Building,
+  Building2,
   DollarSign,
   ChevronRight,
   ChevronLeft,
   AlertTriangle,
   MoveRight,
+  Sparkles,
 } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -29,17 +30,17 @@ interface PipelineClientProps {
   role: UserRole;
 }
 
-const PIPELINE_COLUMNS: { stage: PipelineStage; label: string }[] = [
-  { stage: "new_lead", label: "New Lead" },
-  { stage: "contact_in_progress", label: "Contact in Progress" },
-  { stage: "contacted_qualified", label: "Contacted / Qualified" },
-  { stage: "visit_scheduled", label: "Visit Scheduled" },
-  { stage: "site_visit_completed", label: "Site Visit Completed" },
-  { stage: "negotiation", label: "Negotiation" },
-  { stage: "booking_deposit_pending", label: "Booking / Deposit Pending" },
-  { stage: "contract_issued", label: "Contract Issued" },
-  { stage: "closed_won", label: "Closed Won" },
-  { stage: "closed_lost", label: "Closed Lost" },
+const PIPELINE_COLUMNS: { stage: PipelineStage; label: string; accentColor: string }[] = [
+  { stage: "new_lead", label: "New Lead", accentColor: "from-blue-500 to-indigo-500" },
+  { stage: "contact_in_progress", label: "Contact in Progress", accentColor: "from-indigo-500 to-purple-500" },
+  { stage: "contacted_qualified", label: "Contacted / Qualified", accentColor: "from-cyan-500 to-blue-500" },
+  { stage: "visit_scheduled", label: "Visit Scheduled", accentColor: "from-amber-500 to-yellow-500" },
+  { stage: "site_visit_completed", label: "Site Visit Completed", accentColor: "from-orange-500 to-amber-500" },
+  { stage: "negotiation", label: "Negotiation", accentColor: "from-violet-500 to-fuchsia-500" },
+  { stage: "booking_deposit_pending", label: "Booking Deposit Pending", accentColor: "from-emerald-500 to-teal-500" },
+  { stage: "contract_issued", label: "Contract Issued", accentColor: "from-blue-600 to-emerald-600" },
+  { stage: "closed_won", label: "Closed Won", accentColor: "from-emerald-400 to-green-600" },
+  { stage: "closed_lost", label: "Closed Lost", accentColor: "from-rose-500 to-red-600" },
 ];
 
 export function PipelineClient({ initialLeads, role }: PipelineClientProps) {
@@ -61,6 +62,8 @@ export function PipelineClient({ initialLeads, role }: PipelineClientProps) {
         `${l.contact.firstName} ${l.contact.lastName}`.toLowerCase().includes(search.toLowerCase())) ||
       (l.property && l.property.title.toLowerCase().includes(search.toLowerCase()))
   );
+
+  const totalPipelineValue = leads.reduce((sum, l) => sum + (l.budgetMax || 0), 0);
 
   const handleOpenMoveModal = (lead: Lead) => {
     setSelectedLead(lead);
@@ -106,28 +109,35 @@ export function PipelineClient({ initialLeads, role }: PipelineClientProps) {
   return (
     <div className="space-y-6">
       {/* Header & Search */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="glass-panel p-6 rounded-3xl border border-slate-200/90 dark:border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm">
         <div>
-          <h1 className="text-2xl font-black text-navy-deep tracking-tight">Sales Pipeline</h1>
-          <p className="text-xs text-text-secondary mt-1">
-            Kanban workflow with 10 defined stages and live deal volume calculations.
+          <div className="flex items-center gap-2.5">
+            <h1 className="text-2xl font-black text-navy-deep dark:text-white tracking-tight">
+              Sales Pipeline
+            </h1>
+            <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-extrabold text-xs border border-emerald-500/20">
+              10 Dynamic Stages
+            </span>
+          </div>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+            Total active deal volume: <span className="font-extrabold text-navy-deep dark:text-white">{formatCurrency(totalPipelineValue)}</span>
           </p>
         </div>
 
-        <div className="w-full sm:w-72 relative">
-          <Search className="absolute left-3 top-2.5 w-4 h-4 text-slate-400" />
+        <div className="w-full sm:w-80 relative">
+          <Search className="absolute left-3.5 top-2.5 w-4 h-4 text-slate-400" />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search pipeline cards..."
-            className="w-full pl-9 pr-3 py-2 text-xs bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary shadow-xs"
+            placeholder="Search deals, clients, properties..."
+            className="w-full pl-9 pr-3.5 py-2 text-xs bg-slate-50 dark:bg-white/[0.04] border border-slate-200 dark:border-white/10 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary shadow-2xs"
           />
         </div>
       </div>
 
       {/* Kanban Board Container (Smooth horizontal scrollable columns) */}
-      <div className="flex gap-4 overflow-x-auto pb-6 pt-2 snap-x select-none">
+      <div className="flex gap-4 overflow-x-auto pb-6 pt-1 select-none">
         {PIPELINE_COLUMNS.map((col) => {
           const colLeads = filteredLeads.filter((l) => l.stage === col.stage);
           const colVolume = colLeads.reduce((acc, l) => acc + (l.budgetMax || 0), 0);
@@ -136,25 +146,25 @@ export function PipelineClient({ initialLeads, role }: PipelineClientProps) {
           return (
             <div
               key={col.stage}
-              className="w-72 shrink-0 bg-slate-100/75 rounded-2xl p-3 border border-slate-200/90 flex flex-col max-h-[75vh]"
+              className="w-76 shrink-0 bg-slate-100/70 dark:bg-[#0B101D] rounded-3xl p-3.5 border border-slate-200/80 dark:border-white/8 flex flex-col max-h-[76vh] shadow-xs"
             >
               {/* Column Header */}
-              <div className="flex items-center justify-between pb-3 px-1 border-b border-slate-200">
-                <div className="flex items-center gap-2">
+              <div className="flex items-center justify-between pb-3 px-1 border-b border-slate-200 dark:border-white/8">
+                <div className="flex items-center gap-2 overflow-hidden">
                   <span
-                    className={`w-2.5 h-2.5 rounded-full ${stCfg?.color.replace("text-", "bg-")}`}
+                    className={`w-2.5 h-2.5 rounded-full shrink-0 ${stCfg?.color.replace("text-", "bg-")}`}
                   />
-                  <h3 className="text-xs font-bold text-navy-deep truncate max-w-[170px]">
+                  <h3 className="text-xs font-bold text-navy-deep dark:text-white truncate">
                     {col.label}
                   </h3>
                 </div>
-                <span className="text-[11px] font-extrabold px-2 py-0.5 rounded-full bg-white text-slate-700 shadow-2xs border border-slate-200">
+                <span className="text-[11px] font-black px-2 py-0.5 rounded-full bg-white dark:bg-white/10 text-slate-800 dark:text-slate-200 shadow-2xs border border-slate-200 dark:border-white/10">
                   {colLeads.length}
                 </span>
               </div>
 
               {colVolume > 0 && (
-                <div className="px-1 py-1.5 text-[10px] font-bold text-slate-500">
+                <div className="px-1 py-1.5 text-[10px] font-extrabold text-slate-500 dark:text-slate-400">
                   Vol: {formatCurrency(colVolume)}
                 </div>
               )}
@@ -162,20 +172,20 @@ export function PipelineClient({ initialLeads, role }: PipelineClientProps) {
               {/* Cards List */}
               <div className="flex-1 overflow-y-auto space-y-3 mt-2 pr-0.5">
                 {colLeads.length === 0 ? (
-                  <div className="py-8 text-center text-[11px] text-slate-400 font-medium">
+                  <div className="py-12 text-center text-[11px] text-slate-400 font-medium">
                     No deals in this stage
                   </div>
                 ) : (
                   colLeads.map((lead) => (
                     <div
                       key={lead.id}
-                      className="bg-white p-3.5 rounded-xl border border-slate-200 shadow-card hover:shadow-premium hover:border-primary/40 transition-all space-y-2 group"
+                      className="bg-white dark:bg-[#121A2E] p-4 rounded-2xl border border-slate-200/90 dark:border-white/8 shadow-sm hover:shadow-lg dark:hover:shadow-[0_10px_25px_rgba(0,0,0,0.5)] hover:border-indigo-500/50 dark:hover:border-indigo-400/50 transition-all space-y-2.5 group"
                     >
                       {/* Title & Link */}
                       <div className="flex items-start justify-between gap-2">
                         <Link
                           href={`/leads/${lead.id}`}
-                          className="font-bold text-xs text-navy-deep group-hover:text-primary transition-colors line-clamp-2 leading-tight"
+                          className="font-extrabold text-xs text-navy-deep dark:text-white group-hover:text-primary dark:group-hover:text-cyan transition-colors line-clamp-2 leading-tight"
                         >
                           {lead.title}
                         </Link>
@@ -183,8 +193,8 @@ export function PipelineClient({ initialLeads, role }: PipelineClientProps) {
 
                       {/* Buyer Contact */}
                       {lead.contact && (
-                        <p className="text-[11px] text-slate-600 font-medium flex items-center gap-1.5">
-                          <User className="w-3 h-3 text-slate-400 shrink-0" />
+                        <p className="text-[11px] text-slate-600 dark:text-slate-300 font-medium flex items-center gap-1.5">
+                          <User className="w-3.5 h-3.5 text-slate-400 shrink-0" />
                           <span className="truncate">
                             {lead.contact.firstName} {lead.contact.lastName}
                           </span>
@@ -193,28 +203,30 @@ export function PipelineClient({ initialLeads, role }: PipelineClientProps) {
 
                       {/* Property */}
                       {lead.property && (
-                        <p className="text-[11px] text-slate-500 flex items-center gap-1.5">
-                          <Building className="w-3 h-3 text-slate-400 shrink-0" />
+                        <p className="text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+                          <Building2 className="w-3.5 h-3.5 text-slate-400 shrink-0" />
                           <span className="truncate">{lead.property.title}</span>
                         </p>
                       )}
 
                       {/* Budget */}
                       {lead.budgetMax && (
-                        <p className="text-xs font-black text-primary">
-                          {formatCurrency(lead.budgetMax)}
-                        </p>
+                        <div className="pt-1">
+                          <span className="text-xs font-black text-primary dark:text-cyan">
+                            {formatCurrency(lead.budgetMax)}
+                          </span>
+                        </div>
                       )}
 
                       {/* Footer: Agent & Stage Mover Button */}
-                      <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-400">
-                        <span className="truncate max-w-[120px]">
-                          {lead.assignedAgent?.fullName ? `Agent: ${lead.assignedAgent.fullName.split(" ")[0]}` : "Unassigned"}
+                      <div className="pt-2 border-t border-slate-100 dark:border-white/8 flex items-center justify-between text-[10px] text-slate-400">
+                        <span className="truncate max-w-[110px]">
+                          {lead.assignedAgent?.fullName ? `${lead.assignedAgent.fullName.split(" ")[0]}` : "Unassigned"}
                         </span>
 
                         <button
                           onClick={() => handleOpenMoveModal(lead)}
-                          className="px-2 py-1 rounded bg-slate-100 hover:bg-primary hover:text-white font-bold text-slate-600 transition-colors flex items-center gap-1"
+                          className="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-white/10 hover:bg-primary dark:hover:bg-cyan hover:text-white font-bold text-slate-700 dark:text-slate-200 transition-colors flex items-center gap-1"
                           title="Move stage"
                         >
                           Move <MoveRight className="w-3 h-3" />
@@ -238,14 +250,16 @@ export function PipelineClient({ initialLeads, role }: PipelineClientProps) {
       >
         <div className="space-y-4">
           <div className="space-y-1.5">
-            <label className="block text-xs font-semibold text-slate-700">Select New Stage</label>
+            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300">
+              Select New Stage
+            </label>
             <select
               value={targetStage || ""}
               onChange={(e) => setTargetStage(e.target.value as PipelineStage)}
-              className="w-full h-10 px-3 text-xs bg-white border border-slate-300 rounded-lg font-semibold"
+              className="w-full h-10 px-3 text-xs bg-white dark:bg-slate-900 border border-slate-300 dark:border-white/10 rounded-xl text-slate-900 dark:text-white font-semibold focus:outline-none focus:ring-2 focus:ring-primary"
             >
               {PIPELINE_COLUMNS.map((col) => (
-                <option key={col.stage} value={col.stage}>
+                <option key={col.stage} value={col.stage} className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">
                   {col.label}
                 </option>
               ))}
@@ -253,8 +267,8 @@ export function PipelineClient({ initialLeads, role }: PipelineClientProps) {
           </div>
 
           {targetStage === "closed_lost" && (
-            <div className="space-y-2 p-3 rounded-xl bg-rose-50 border border-rose-200">
-              <label className="block text-xs font-bold text-rose-900">Closed Lost Reason *</label>
+            <div className="space-y-2 p-3.5 rounded-2xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900/60">
+              <label className="block text-xs font-bold text-rose-900 dark:text-rose-300">Closed Lost Reason *</label>
               <Textarea
                 placeholder="Reason why this inquiry was lost (e.g. Budget mismatch, bought another project)..."
                 value={closedLostReason}
