@@ -55,7 +55,7 @@ export function Modal({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
             onClick={onClose}
-            className="fixed inset-0 bg-navy-deep/60 backdrop-blur-sm"
+            className="fixed inset-0 bg-black/75 backdrop-blur-md"
           />
 
           {/* Dialog Container */}
@@ -65,20 +65,20 @@ export function Modal({
             exit={{ opacity: 0, scale: 0.96, y: 8 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
             className={cn(
-              "relative w-full bg-white rounded-2xl shadow-premium border border-slate-200 z-10 overflow-hidden my-8",
+              "relative w-full bg-white dark:bg-[#0F172A] rounded-2xl shadow-2xl dark:shadow-glass-dark border border-slate-200 dark:border-slate-800 z-10 overflow-hidden my-8 transition-colors",
               maxW
             )}
           >
             {/* Header */}
             {(title || description) && (
-              <div className="flex items-start justify-between p-6 border-b border-slate-100">
+              <div className="flex items-start justify-between p-6 border-b border-slate-100 dark:border-slate-800">
                 <div>
-                  {title && <h3 className="text-lg font-bold text-navy-deep">{title}</h3>}
-                  {description && <p className="text-sm text-text-secondary mt-1">{description}</p>}
+                  {title && <h3 className="text-lg font-bold text-navy-deep dark:text-white">{title}</h3>}
+                  {description && <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">{description}</p>}
                 </div>
                 <button
                   onClick={onClose}
-                  className="p-1 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
+                  className="p-1.5 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -86,7 +86,7 @@ export function Modal({
             )}
 
             {/* Content */}
-            <div className="p-6 max-h-[80vh] overflow-y-auto">{children}</div>
+            <div className="p-6 max-h-[80vh] overflow-y-auto text-slate-800 dark:text-slate-100">{children}</div>
           </motion.div>
         </div>
       )}

@@ -5,7 +5,7 @@ import { TeamClient } from "./team-client";
 import { redirect } from "next/navigation";
 
 export const metadata = {
-  title: "Users & Team — SkyVista CRM",
+  title: "Users & Team — PropTech CRM",
 };
 
 export default async function TeamPage() {

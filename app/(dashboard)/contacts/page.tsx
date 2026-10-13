@@ -5,7 +5,7 @@ import { ContactsClient } from "./contacts-client";
 import { redirect } from "next/navigation";
 
 export const metadata = {
-  title: "Contacts — SkyVista CRM",
+  title: "Contacts — PropTech CRM",
 };
 
 export default async function ContactsPage({

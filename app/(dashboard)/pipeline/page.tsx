@@ -5,7 +5,7 @@ import { PipelineClient } from "./pipeline-client";
 import { redirect } from "next/navigation";
 
 export const metadata = {
-  title: "Sales Pipeline — SkyVista CRM",
+  title: "Sales Pipeline — PropTech CRM",
 };
 
 export default async function PipelinePage() {

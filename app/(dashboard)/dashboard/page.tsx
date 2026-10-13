@@ -5,7 +5,7 @@ import { DashboardClient } from "./dashboard-client";
 import { redirect } from "next/navigation";
 
 export const metadata = {
-  title: "Dashboard — SkyVista CRM",
+  title: "Dashboard — PropTech CRM",
 };
 
 export default async function DashboardPage() {

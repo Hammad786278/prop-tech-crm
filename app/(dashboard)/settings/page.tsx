@@ -5,7 +5,7 @@ import { SettingsClient } from "./settings-client";
 import { redirect } from "next/navigation";
 
 export const metadata = {
-  title: "Agency Settings — SkyVista CRM",
+  title: "Agency Settings — PropTech CRM",
 };
 
 export default async function SettingsPage() {

@@ -1,4 +1,4 @@
-# SkyVista CRM — AI-Ready Real Estate CRM SaaS
+# PropTech CRM — AI-Ready Real Estate CRM SaaS
 > **"More Leads. Better Relationships. More Deals."**
 
 PropTech SaaS engineered specifically for modern real estate agencies, property consultants, sales managers, and inventory executives. Built with multi-tenant data isolation, strict role-based access control (RBAC), and localized defaults for the Pakistan market (PKR currency, Asia/Karachi timezone, Marla/Kanal units).
@@ -7,7 +7,7 @@ PropTech SaaS engineered specifically for modern real estate agencies, property 
 
 ## 🌟 Executive Overview
 
-- **Brand Name**: SkyVista CRM
+- **Brand Name**: PropTech CRM
 - **Product Category**: Real Estate Customer Relationship Management SaaS
 - **Target Market**: Initial launch in Pakistan (Karachi, Lahore, Islamabad) with full internationalization readiness
 - **Architecture**: Modular Next.js Monolith with PostgreSQL & Supabase Row-Level Security (RLS)
@@ -230,7 +230,7 @@ npm run test
 1. **Push to GitHub**:
    ```bash
    git add .
-   git commit -m "feat: complete SkyVista CRM Phase 1 MVP"
+   git commit -m "feat: complete PropTech CRM Phase 1 MVP"
    git push origin main
    ```
 

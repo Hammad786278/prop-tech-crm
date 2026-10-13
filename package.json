@@ -2,7 +2,7 @@
   "name": "prop-tech-crm",
   "version": "1.0.0",
   "private": true,
-  "description": "SkyVista CRM - AI-Ready Real Estate CRM SaaS Phase 1 MVP",
+  "description": "PropTech CRM - AI-Ready Real Estate CRM SaaS Phase 1 MVP",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

@@ -18,7 +18,9 @@ const DEFAULT_ORG_ID = "org-skyline-pk";
  */
 export async function getCurrentSession(): Promise<SessionContext | null> {
   const cookieStore = cookies();
-  const sessionCookie = cookieStore.get("skyvista_session")?.value;
+  const sessionCookie =
+    cookieStore.get("proptech_session")?.value ||
+    cookieStore.get("skyvista_session")?.value;
 
   let userId = DEFAULT_USER_ID;
   let orgId = DEFAULT_ORG_ID;

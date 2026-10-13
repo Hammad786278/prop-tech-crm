@@ -5,7 +5,7 @@ import { LeadDetailClient } from "./lead-detail-client";
 import { notFound, redirect } from "next/navigation";
 
 export const metadata = {
-  title: "Lead Details — SkyVista CRM",
+  title: "Lead Details — PropTech CRM",
 };
 
 export default async function LeadDetailPage({ params }: { params: { id: string } }) {

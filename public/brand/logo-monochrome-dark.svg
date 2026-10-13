@@ -1,13 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 48" fill="none">
-  <!-- Monochrome Dark (White Elements for Dark Backgrounds) -->
   <g transform="translate(0, 0)">
-    <rect width="48" height="48" rx="12" fill="#FFFFFF" fill-opacity="0.1" />
-    <path d="M10 38V22L17 18V38H10Z" fill="#FFFFFF" opacity="0.4" />
+    <rect width="48" height="48" rx="12" fill="#0F172A" stroke="#334155" />
+    <path d="M10 38V22L17 18V38H10Z" fill="#334155" />
     <path d="M19 38V12L25 8L31 12V38H19Z" fill="#FFFFFF" />
-    <path d="M33 38V20L39 24V38H33Z" fill="#FFFFFF" opacity="0.6" />
-    <path d="M8 34L25 18L30 22L14 36L8 34Z" fill="#D6B36A" />
+    <path d="M33 38V20L39 24V38H33Z" fill="#64748B" />
+    <path d="M8 34L25 18L30 22L14 36L8 34Z" fill="#F59E0B" />
   </g>
-  <text x="60" y="27" font-family="Inter, system-ui, -apple-system, sans-serif" font-weight="800" font-size="20" fill="#FFFFFF" letter-spacing="-0.5">SkyVista</text>
-  <text x="146" y="27" font-family="Inter, system-ui, -apple-system, sans-serif" font-weight="700" font-size="14" fill="#D6B36A" letter-spacing="1">CRM</text>
-  <text x="60" y="41" font-family="Inter, system-ui, -apple-system, sans-serif" font-weight="500" font-size="8.5" fill="#9CA3AF" letter-spacing="0.2">REAL ESTATE SaaS</text>
+  <text x="60" y="27" font-family="Inter, system-ui, -apple-system, sans-serif" font-weight="800" font-size="20" fill="#FFFFFF" letter-spacing="-0.5">Prop<tspan fill="#06B6D4">Tech</tspan></text>
+  <text x="156" y="27" font-family="Inter, system-ui, -apple-system, sans-serif" font-weight="700" font-size="14" fill="#F59E0B" letter-spacing="1">CRM</text>
+  <text x="60" y="41" font-family="Inter, system-ui, -apple-system, sans-serif" font-weight="500" font-size="8.5" fill="#94A3B8" letter-spacing="0.2">REAL ESTATE SaaS</text>
 </svg>

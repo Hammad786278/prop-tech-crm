@@ -5,7 +5,7 @@ import { PropertiesClient } from "./properties-client";
 import { redirect } from "next/navigation";
 
 export const metadata = {
-  title: "Properties & Inventory — SkyVista CRM",
+  title: "Properties & Inventory — PropTech CRM",
 };
 
 export default async function PropertiesPage({

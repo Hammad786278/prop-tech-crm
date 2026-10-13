@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { formatDate, formatDateTime, STAGE_CONFIG, formatCurrency } from "@/lib/utils";
 
 export const metadata = {
-  title: "Contact Details — SkyVista CRM",
+  title: "Contact Details — PropTech CRM",
 };
 
 export default async function ContactDetailPage({ params }: { params: { id: string } }) {

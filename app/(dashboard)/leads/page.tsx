@@ -5,7 +5,7 @@ import { LeadsClient } from "./leads-client";
 import { redirect } from "next/navigation";
 
 export const metadata = {
-  title: "Leads & Inquiries — SkyVista CRM",
+  title: "Leads & Inquiries — PropTech CRM",
 };
 
 export default async function LeadsPage({

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Toaster } from "sonner";
+import { ThemeProvider } from "@/components/theme/theme-provider";
 import "./globals.css";
 
 const inter = Inter({
@@ -10,8 +11,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "SkyVista CRM — Real Estate SaaS",
-  description: "More Leads. Better Relationships. More Deals. The premium AI-ready real estate CRM for modern agencies.",
+  title: "PropTech CRM — Ultra-Premium Real Estate SaaS",
+  description: "More Leads. Better Relationships. More Deals. The high-growth AI-ready real estate CRM for modern agencies, brokerages, and consultants.",
   icons: {
     icon: "/brand/logo-icon.svg",
   },
@@ -23,10 +24,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={inter.variable}>
-      <body className="min-h-screen bg-background font-sans antialiased text-text-primary">
-        {children}
-        <Toaster position="top-right" richColors closeButton />
+    <html lang="en" className={inter.variable} suppressHydrationWarning>
+      <body className="min-h-screen bg-[#F8FAFC] dark:bg-[#070B14] font-sans antialiased text-text-primary dark:text-slate-100 transition-colors duration-200">
+        <ThemeProvider>
+          {children}
+          <Toaster position="top-right" richColors closeButton />
+        </ThemeProvider>
       </body>
     </html>
   );

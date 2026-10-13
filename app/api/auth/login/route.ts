@@ -28,14 +28,16 @@ export async function POST(request: Request) {
       targetUserId = "user-owner-1";
     }
 
-    // Set secure cookie
-    cookies().set("skyvista_session", JSON.stringify({ userId: targetUserId, orgId: targetOrgId }), {
+    const sessionData = JSON.stringify({ userId: targetUserId, orgId: targetOrgId });
+    const cookieOpts = {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      maxAge: 60 * 60 * 24 * 7, // 7 days
+      sameSite: "lax" as const,
+      maxAge: 60 * 60 * 24 * 7,
       path: "/",
-    });
+    };
+    cookies().set("proptech_session", sessionData, cookieOpts);
+    cookies().set("skyvista_session", sessionData, cookieOpts);
 
     return NextResponse.json({ success: true, userId: targetUserId, orgId: targetOrgId });
   } catch (error: any) {

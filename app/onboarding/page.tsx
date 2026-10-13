@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Logo } from "@/components/brand/logo";
+import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ArrowLeft, Building, Check } from "lucide-react";
@@ -30,7 +31,6 @@ export default function OnboardingPage() {
     }
 
     setIsLoading(true);
-    // In Phase 1 MVP, we simulate registration and login to the demo workspace
     setTimeout(() => {
       setIsLoading(false);
       toast.success("Agency registered successfully!");
@@ -39,21 +39,29 @@ export default function OnboardingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
+    <div className="min-h-screen bg-slate-50 dark:bg-[#070B14] flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 transition-colors relative">
+      {/* Top Bar with ThemeToggle */}
+      <div className="absolute top-6 left-6 right-6 flex items-center justify-between max-w-5xl mx-auto">
+        <Link href="/" className="inline-flex items-center text-xs font-semibold text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors">
+          <ArrowLeft className="w-4 h-4 mr-1.5" /> Back to Home
+        </Link>
+        <ThemeToggle />
+      </div>
+
+      <div className="sm:mx-auto sm:w-full sm:max-w-md text-center mt-6">
         <div className="flex justify-center mb-4">
           <Logo variant="full" showTagline />
         </div>
-        <h2 className="text-2xl font-extrabold text-navy-deep tracking-tight">
-          Create Your Agency Workspace
+        <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+          Create Agency Workspace
         </h2>
-        <p className="mt-2 text-xs text-text-secondary">
-          Set up an isolated multi-tenant CRM environment for your real estate team.
+        <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
+          Set up an isolated multi-tenant PropTech CRM environment for your real estate team.
         </p>
       </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-lg px-4 sm:px-0">
-        <div className="bg-white py-8 px-6 shadow-premium rounded-2xl border border-slate-200 sm:px-10">
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-lg">
+        <div className="bg-white dark:bg-slate-900 py-8 px-6 shadow-xl dark:shadow-glass-dark rounded-3xl border border-slate-200 dark:border-slate-800 sm:px-10 transition-colors">
           <form onSubmit={handleSubmit} className="space-y-4">
             <Input
               id="agencyName"
@@ -93,28 +101,28 @@ export default function OnboardingPage() {
             />
 
             <div className="grid grid-cols-3 gap-3 pt-2">
-              <div className="p-3 rounded-xl bg-slate-50 border border-slate-200">
-                <p className="text-[10px] font-bold text-slate-400 uppercase">Country</p>
-                <p className="text-xs font-bold text-navy-deep mt-0.5">Pakistan</p>
+              <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase">Country</p>
+                <p className="text-xs font-bold text-slate-900 dark:text-white mt-0.5">Pakistan</p>
               </div>
-              <div className="p-3 rounded-xl bg-slate-50 border border-slate-200">
-                <p className="text-[10px] font-bold text-slate-400 uppercase">Timezone</p>
-                <p className="text-xs font-bold text-navy-deep mt-0.5">Asia/Karachi</p>
+              <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase">Timezone</p>
+                <p className="text-xs font-bold text-slate-900 dark:text-white mt-0.5">Asia/Karachi</p>
               </div>
-              <div className="p-3 rounded-xl bg-slate-50 border border-slate-200">
-                <p className="text-[10px] font-bold text-slate-400 uppercase">Currency</p>
-                <p className="text-xs font-bold text-navy-deep mt-0.5">PKR</p>
+              <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase">Currency</p>
+                <p className="text-xs font-bold text-slate-900 dark:text-white mt-0.5">PKR</p>
               </div>
             </div>
 
-            <Button type="submit" isLoading={isLoading} className="w-full font-bold mt-4">
+            <Button type="submit" variant="primary" size="lg" isLoading={isLoading} className="w-full font-bold mt-4">
               Complete Setup & Open Workspace
             </Button>
 
             <div className="text-center pt-2">
               <Link
                 href="/login"
-                className="inline-flex items-center gap-1.5 text-xs text-slate-500 hover:text-primary font-medium"
+                className="inline-flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-cyan font-medium"
               >
                 <ArrowLeft className="w-3.5 h-3.5" /> Already have an account? Sign In
               </Link>

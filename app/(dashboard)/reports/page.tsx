@@ -5,7 +5,7 @@ import { ReportsClient } from "./reports-client";
 import { redirect } from "next/navigation";
 
 export const metadata = {
-  title: "Reports & Analytics — SkyVista CRM",
+  title: "Reports & Analytics — PropTech CRM",
 };
 
 export default async function ReportsPage() {

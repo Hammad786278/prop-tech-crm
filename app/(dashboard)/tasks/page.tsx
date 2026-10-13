@@ -5,7 +5,7 @@ import { TasksClient } from "./tasks-client";
 import { redirect } from "next/navigation";
 
 export const metadata = {
-  title: "Tasks & Appointments — SkyVista CRM",
+  title: "Tasks & Appointments — PropTech CRM",
 };
 
 export default async function TasksPage() {

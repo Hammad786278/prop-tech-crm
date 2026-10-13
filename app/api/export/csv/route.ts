@@ -56,7 +56,7 @@ export async function GET() {
       status: 200,
       headers: {
         "Content-Type": "text/csv; charset=utf-8",
-        "Content-Disposition": `attachment; filename="skyvista-leads-export-${new Date().toISOString().slice(0, 10)}.csv"`,
+        "Content-Disposition": `attachment; filename="proptech-leads-export-${new Date().toISOString().slice(0, 10)}.csv"`,
       },
     });
   } catch (error: any) {
