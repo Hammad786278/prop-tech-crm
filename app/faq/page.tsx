@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { Logo } from "@/components/brand/logo";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
+import { SiteHeader } from "@/components/landing/site-header";
+import { SiteFooter } from "@/components/landing/site-footer";
 import { Button } from "@/components/ui/button";
 import {
   ArrowLeft,
@@ -74,19 +76,7 @@ export default function FAQPage() {
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-[#070B14] text-slate-900 dark:text-slate-100 transition-colors">
       {/* Navigation */}
-      <header className="sticky top-0 z-40 bg-white/90 dark:bg-[#070B14]/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-          <Logo variant="full" showTagline />
-          <div className="flex items-center gap-3">
-            <ThemeToggle />
-            <Link href="/">
-              <Button variant="outline" size="sm">
-                <ArrowLeft className="w-4 h-4 mr-1.5" /> Back to Home
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </header>
+      <SiteHeader />
 
       {/* Hero Header */}
       <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
@@ -180,10 +170,8 @@ export default function FAQPage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="mt-20 py-8 border-t border-slate-200 dark:border-slate-800 text-center text-xs text-slate-500 dark:text-slate-400">
-        © {new Date().getFullYear()} PropTech CRM. All rights reserved.
-      </footer>
+      {/* Global Unified Enterprise Footer */}
+      <SiteFooter />
     </div>
   );
 }

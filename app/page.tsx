@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button";
 import { RoiCalculator } from "@/components/landing/roi-calculator";
 import { InteractivePipelinePreview } from "@/components/landing/interactive-pipeline-preview";
 import { MarlaCalculator } from "@/components/landing/marla-calculator";
+import { SiteHeader } from "@/components/landing/site-header";
+import { SiteFooter } from "@/components/landing/site-footer";
 import {
   TrendingUp,
   Building2,
@@ -40,7 +42,6 @@ import {
 } from "lucide-react";
 
 export default function LandingPage() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeFaq, setActiveFaq] = useState<number | null>(0);
   const [activeInteractiveTool, setActiveInteractiveTool] = useState<"pipeline" | "marla" | "roi">("pipeline");
 
@@ -73,91 +74,7 @@ export default function LandingPage() {
       </div>
 
       {/* Top Sticky Navigation Bar */}
-      <header className="sticky top-0 z-40 bg-white/80 dark:bg-[#040714]/80 backdrop-blur-2xl border-b border-slate-200/80 dark:border-white/10 transition-colors shadow-xs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-          <Logo variant="full" showTagline />
-
-          {/* Desktop Nav Links */}
-          <nav className="hidden md:flex items-center gap-7 text-sm font-bold text-slate-600 dark:text-slate-300">
-            <a href="#features" className="hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors">
-              Features
-            </a>
-            <a href="#interactive-suite" className="hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors">
-              Marla & Pipeline Engine
-            </a>
-            <a href="#societies" className="hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors">
-              Societies Matrix
-            </a>
-            <Link href="/faq" className="hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors">
-              FAQs
-            </Link>
-            <Link href="/contact" className="hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors">
-              Contact
-            </Link>
-          </nav>
-
-          {/* Right Action Buttons */}
-          <div className="hidden sm:flex items-center gap-3">
-            <ThemeToggle />
-            <Link href="/login">
-              <Button variant="ghost" size="sm" className="font-bold">
-                Sign In
-              </Button>
-            </Link>
-            <Link href="/dashboard">
-              <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>
-                <Button className="bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 hover:from-emerald-500 hover:to-cyan-500 text-white font-black shadow-lg shadow-emerald-950/40 border border-emerald-400/30 rounded-2xl px-5">
-                  Launch CRM Console <ArrowRight className="w-4 h-4 ml-1.5" />
-                </Button>
-              </motion.div>
-            </Link>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <div className="flex items-center gap-2 sm:hidden">
-            <ThemeToggle />
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors"
-              aria-label="Toggle Menu"
-            >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
-          </div>
-        </div>
-
-        {/* Mobile Dropdown Menu */}
-        <AnimatePresence>
-          {mobileMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              className="sm:hidden border-b border-slate-200 dark:border-white/10 bg-white dark:bg-[#070D22] px-6 py-6 space-y-4 shadow-2xl backdrop-blur-3xl"
-            >
-              <nav className="flex flex-col space-y-3 text-base font-bold text-slate-700 dark:text-slate-200">
-                <a href="#features" onClick={() => setMobileMenuOpen(false)} className="hover:text-emerald-500">Features</a>
-                <a href="#interactive-suite" onClick={() => setMobileMenuOpen(false)} className="hover:text-emerald-500">Marla & Pipeline Engine</a>
-                <a href="#societies" onClick={() => setMobileMenuOpen(false)} className="hover:text-emerald-500">Societies Matrix</a>
-                <Link href="/faq" onClick={() => setMobileMenuOpen(false)} className="hover:text-emerald-500">FAQs</Link>
-                <Link href="/contact" onClick={() => setMobileMenuOpen(false)} className="hover:text-emerald-500">Contact</Link>
-              </nav>
-              <div className="pt-4 border-t border-slate-100 dark:border-white/10 flex flex-col gap-2">
-                <Link href="/dashboard" onClick={() => setMobileMenuOpen(false)}>
-                  <Button className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl">
-                    Launch CRM Console
-                  </Button>
-                </Link>
-                <Link href="/login" onClick={() => setMobileMenuOpen(false)}>
-                  <Button variant="outline" className="w-full font-bold rounded-xl">
-                    Agency Sign In
-                  </Button>
-                </Link>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </header>
+      <SiteHeader />
 
       {/* HERO SECTION WITH MOTION UI & GLOSSY LEVITATING BADGES */}
       <section className="relative z-10 pt-16 pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center">
@@ -522,45 +439,46 @@ export default function LandingPage() {
 
       {/* FINAL CALL TO ACTION BANNER */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative z-10">
-        <div className="glass-panel rounded-3xl p-8 sm:p-14 text-center relative overflow-hidden bg-gradient-to-br from-emerald-600/90 via-teal-700/90 to-slate-900 text-white shadow-2xl border border-emerald-400/30">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl pointer-events-none" />
-          <h2 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight max-w-3xl mx-auto">
-            Ready to Supercharge Your Real Estate Sales Team?
-          </h2>
-          <p className="mt-4 text-emerald-100 text-sm sm:text-base max-w-xl mx-auto">
-            Experience the full multi-tenant CRM right now with instant one-click demo credentials.
-          </p>
+        <div className="rounded-3xl p-8 sm:p-14 text-center relative overflow-hidden bg-gradient-to-br from-[#064E3B] via-[#065F46] to-[#040714] text-white shadow-2xl border border-emerald-400/40">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-400/15 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-cyan-500/15 rounded-full blur-3xl pointer-events-none" />
 
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-            <Link href="/dashboard">
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Button size="lg" className="h-14 px-8 text-base font-black bg-white text-slate-900 hover:bg-slate-100 shadow-xl rounded-2xl">
-                  Open Live CRM Workspace <ArrowRight className="w-5 h-5 ml-2" />
-                </Button>
-              </motion.div>
-            </Link>
-            <Link href="/login">
-              <Button size="lg" variant="outline" className="h-14 px-8 text-base font-black text-white border-white/30 hover:bg-white/10 rounded-2xl">
-                Agency Login
-              </Button>
-            </Link>
+          <div className="relative z-10">
+            <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-400/20 text-emerald-300 border border-emerald-400/40 text-xs font-black mb-4">
+              <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+              <span>Instant Agency Deployment</span>
+            </span>
+
+            <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight max-w-3xl mx-auto drop-shadow-sm">
+              Ready to Supercharge Your Real Estate Sales Team?
+            </h2>
+
+            <p className="mt-4 text-emerald-100 text-sm sm:text-base max-w-xl mx-auto font-medium">
+              Experience the full multi-tenant CRM right now with instant one-click demo credentials.
+            </p>
+
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+              <Link href="/dashboard">
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Button size="lg" className="h-14 px-8 text-base font-black bg-white text-emerald-950 hover:bg-emerald-50 shadow-2xl shadow-black/40 rounded-2xl border border-white">
+                    Open Live CRM Workspace <ArrowRight className="w-5 h-5 ml-2 text-emerald-700" />
+                  </Button>
+                </motion.div>
+              </Link>
+              <Link href="/login">
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Button size="lg" variant="outline" className="h-14 px-8 text-base font-black text-white border-white/40 hover:bg-white/15 hover:text-white rounded-2xl bg-white/10 backdrop-blur-md">
+                    Agency Login
+                  </Button>
+                </motion.div>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* FOOTER */}
-      <footer className="border-t border-slate-200/80 dark:border-white/10 bg-white/80 dark:bg-[#030611] py-12 px-4 sm:px-6 lg:px-8 text-xs text-slate-500 dark:text-slate-400 relative z-10">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-          <Logo variant="full" />
-          <div className="flex flex-wrap items-center gap-6 font-semibold">
-            <Link href="/privacy" className="hover:text-emerald-500 transition-colors">Privacy Policy</Link>
-            <Link href="/terms" className="hover:text-emerald-500 transition-colors">Terms of Service</Link>
-            <Link href="/faq" className="hover:text-emerald-500 transition-colors">FAQs</Link>
-            <Link href="/contact" className="hover:text-emerald-500 transition-colors">Support & Contact</Link>
-          </div>
-          <p className="text-[11px]">© 2026 PropTech CRM. All rights reserved.</p>
-        </div>
-      </footer>
+      {/* Global Unified Enterprise Footer */}
+      <SiteFooter />
     </div>
   );
 }
