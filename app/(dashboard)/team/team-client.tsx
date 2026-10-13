@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   Plus,
@@ -14,6 +15,7 @@ import {
   Briefcase,
   KeyRound,
   Sparkles,
+  Globe,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Modal } from "@/components/ui/modal";
@@ -111,6 +113,12 @@ export function TeamClient({ initialMembers, currentUserId, role }: TeamClientPr
           </div>
 
           <div className="flex items-center gap-3">
+            <Link href="/">
+              <Button variant="outline" size="sm" className="rounded-xl border-emerald-500/30 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/40">
+                <Globe className="w-3.5 h-3.5 mr-1.5 text-emerald-500" /> Public Site
+              </Button>
+            </Link>
+
             <div className="px-4 py-2 rounded-2xl bg-slate-100/80 dark:bg-slate-800/80 border border-slate-200/60 dark:border-slate-700/60 text-right">
               <p className="text-[10px] uppercase font-bold text-slate-400">Roster Capacity</p>
               <p className="text-sm font-black text-slate-900 dark:text-white">{activeCount} / {members.length} Active</p>

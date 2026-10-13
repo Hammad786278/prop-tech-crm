@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Plus, Search, Filter, Phone, Mail, Building, ArrowRight, UserCheck, AlertTriangle } from "lucide-react";
+import { Plus, Search, Filter, Phone, Mail, Building, ArrowRight, UserCheck, AlertTriangle, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Modal } from "@/components/ui/modal";
@@ -125,9 +125,16 @@ export function ContactsClient({
             Manage buyers, sellers, and property investors with unified lead inquiry history.
           </p>
         </div>
-        <Button onClick={() => setIsCreateOpen(true)} size="sm" variant="primary" className="shadow-md shadow-indigo-600/25">
-          <Plus className="w-4 h-4 mr-1.5" /> Add Contact
-        </Button>
+        <div className="flex items-center gap-2.5">
+          <Link href="/">
+            <Button variant="outline" size="sm" className="rounded-xl border-emerald-500/30 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/40">
+              <Globe className="w-3.5 h-3.5 mr-1.5 text-emerald-500" /> Public Site
+            </Button>
+          </Link>
+          <Button onClick={() => setIsCreateOpen(true)} size="sm" variant="primary" className="shadow-md shadow-indigo-600/25">
+            <Plus className="w-4 h-4 mr-1.5" /> Add Contact
+          </Button>
+        </div>
       </div>
 
       {/* Search and Filters Bar */}

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import {
   Building2,
   Kanban,
@@ -83,6 +84,11 @@ export function SettingsClient({
           </div>
 
           <div className="flex items-center gap-2">
+            <Link href="/">
+              <Button variant="outline" size="sm" className="rounded-xl border-emerald-500/30 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/40">
+                <Globe className="w-3.5 h-3.5 mr-1.5 text-emerald-500" /> Public Site
+              </Button>
+            </Link>
             <span className="px-3 py-1.5 rounded-2xl bg-slate-100 dark:bg-slate-800 text-xs font-bold text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
               {organization.name}
             </span>

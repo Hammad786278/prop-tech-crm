@@ -15,6 +15,7 @@ import {
   Maximize2,
   ArrowRight,
   ShieldAlert,
+  Globe,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -154,6 +155,12 @@ export function PropertiesClient({
               <List className="w-4 h-4" />
             </button>
           </div>
+
+          <Link href="/">
+            <Button variant="outline" size="sm" className="rounded-xl border-emerald-500/30 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/40">
+              <Globe className="w-3.5 h-3.5 mr-1.5 text-emerald-500" /> Public Site
+            </Button>
+          </Link>
 
           {role !== "sales_agent" && (
             <Button onClick={() => setIsCreateOpen(true)} size="sm" variant="primary" className="shadow-md shadow-indigo-600/25">

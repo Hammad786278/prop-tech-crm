@@ -15,6 +15,8 @@ import {
 } from "recharts";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import {
   TrendingUp,
   Award,
@@ -26,6 +28,7 @@ import {
   BarChart3,
   Layers,
   ArrowUpRight,
+  Globe,
 } from "lucide-react";
 import type { DashboardMetrics, Property, OrganizationMembership, Appointment, Lead } from "@/types";
 import { formatCurrency, ROLE_LABELS } from "@/lib/utils";
@@ -107,6 +110,11 @@ export function ReportsClient({
           </div>
 
           <div className="flex items-center gap-3">
+            <Link href="/">
+              <Button variant="outline" size="sm" className="rounded-xl border-emerald-500/30 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/40">
+                <Globe className="w-3.5 h-3.5 mr-1.5 text-emerald-500" /> Public Site
+              </Button>
+            </Link>
             <div className="px-4 py-2.5 rounded-2xl bg-slate-100/80 dark:bg-slate-800/80 border border-slate-200/60 dark:border-slate-700/60 text-right">
               <p className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Overall Conversion</p>
               <p className="text-lg font-black text-indigo-600 dark:text-indigo-400">{winRate}% Won</p>
