@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 48" fill="none">
+  <!-- Monochrome Light (Dark Ink Elements for Crisp Monochrome Printing/Light UI) -->
+  <g transform="translate(0, 0)">
+    <rect width="48" height="48" rx="12" fill="#0B1220" />
+    <path d="M10 38V22L17 18V38H10Z" fill="#FFFFFF" opacity="0.3" />
+    <path d="M19 38V12L25 8L31 12V38H19Z" fill="#FFFFFF" />
+    <path d="M33 38V20L39 24V38H33Z" fill="#FFFFFF" opacity="0.6" />
+    <path d="M8 34L25 18L30 22L14 36L8 34Z" fill="#D6B36A" />
+  </g>
+  <text x="60" y="27" font-family="Inter, system-ui, -apple-system, sans-serif" font-weight="800" font-size="20" fill="#0B1220" letter-spacing="-0.5">SkyVista</text>
+  <text x="146" y="27" font-family="Inter, system-ui, -apple-system, sans-serif" font-weight="700" font-size="14" fill="#0B1220" letter-spacing="1">CRM</text>
+  <text x="60" y="41" font-family="Inter, system-ui, -apple-system, sans-serif" font-weight="500" font-size="8.5" fill="#4B5563" letter-spacing="0.2">REAL ESTATE SaaS</text>
+</svg>

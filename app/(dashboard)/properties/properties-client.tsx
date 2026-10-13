@@ -1,0 +1,545 @@
+"use client";
+
+import React, { useState } from "react";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import {
+  Plus,
+  Search,
+  Building,
+  LayoutGrid,
+  List,
+  MapPin,
+  Bed,
+  Bath,
+  Maximize2,
+  ArrowRight,
+  ShieldAlert,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Modal } from "@/components/ui/modal";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { EmptyState } from "@/components/ui/empty-state";
+import { formatCurrency, PROPERTY_STATUS_CONFIG } from "@/lib/utils";
+import type { Property, PropertyType, PropertyStatus, UserRole } from "@/types";
+import { toast } from "sonner";
+
+interface PropertiesClientProps {
+  initialProperties: Property[];
+  total: number;
+  currentPage: number;
+  role: UserRole;
+}
+
+export function PropertiesClient({
+  initialProperties,
+  total,
+  currentPage,
+  role,
+}: PropertiesClientProps) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [search, setSearch] = useState(searchParams.get("search") || "");
+  const [status, setStatus] = useState(searchParams.get("status") || "all");
+  const [propertyType, setPropertyType] = useState(searchParams.get("type") || "all");
+  const [city, setCity] = useState(searchParams.get("city") || "all");
+
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [formData, setFormData] = useState({
+    title: "",
+    listingReference: "",
+    projectName: "",
+    propertyType: "Apartment" as PropertyType,
+    city: "Karachi",
+    area: "",
+    address: "",
+    size: "",
+    sizeUnit: "Marla",
+    bedrooms: "",
+    bathrooms: "",
+    price: "",
+    currency: "PKR",
+    paymentPlanNotes: "",
+    developerName: "",
+    description: "",
+    status: "available" as PropertyStatus,
+  });
+
+  const handleFilterSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const params = new URLSearchParams();
+    if (search) params.set("search", search);
+    if (status !== "all") params.set("status", status);
+    if (propertyType !== "all") params.set("type", propertyType);
+    if (city !== "all") params.set("city", city);
+    params.set("page", "1");
+    router.push(`/properties?${params.toString()}`);
+  };
+
+  const handleCreateProperty = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    try {
+      const res = await fetch("/api/properties", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...formData,
+          size: Number(formData.size),
+          price: Number(formData.price),
+          bedrooms: formData.bedrooms ? Number(formData.bedrooms) : undefined,
+          bathrooms: formData.bathrooms ? Number(formData.bathrooms) : undefined,
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        toast.error(data.error || "Failed to create property");
+        return;
+      }
+
+      toast.success("Property listing created");
+      setIsCreateOpen(false);
+      router.refresh();
+    } catch {
+      toast.error("Error creating property");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Page Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-black text-navy-deep tracking-tight">
+            Properties & Inventory
+          </h1>
+          <p className="text-xs text-text-secondary mt-1">
+            Track real estate inventory, project allotments, and pricing in PKR.
+          </p>
+        </div>
+
+        <div className="flex items-center gap-2">
+          {/* Grid / List View Toggle */}
+          <div className="flex items-center p-1 bg-white border border-slate-200 rounded-xl">
+            <button
+              onClick={() => setViewMode("grid")}
+              className={`p-1.5 rounded-lg transition-colors ${
+                viewMode === "grid" ? "bg-slate-100 text-navy-deep" : "text-slate-400 hover:text-slate-700"
+              }`}
+              title="Grid view"
+            >
+              <LayoutGrid className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => setViewMode("list")}
+              className={`p-1.5 rounded-lg transition-colors ${
+                viewMode === "list" ? "bg-slate-100 text-navy-deep" : "text-slate-400 hover:text-slate-700"
+              }`}
+              title="List view"
+            >
+              <List className="w-4 h-4" />
+            </button>
+          </div>
+
+          {role !== "sales_agent" && (
+            <Button onClick={() => setIsCreateOpen(true)} size="sm">
+              <Plus className="w-4 h-4 mr-1.5" /> Add Property
+            </Button>
+          )}
+        </div>
+      </div>
+
+      {/* Filter Toolbar */}
+      <Card>
+        <CardContent className="p-4">
+          <form
+            onSubmit={handleFilterSubmit}
+            className="flex flex-col lg:flex-row items-center gap-3"
+          >
+            <div className="relative flex-1 w-full">
+              <Search className="absolute left-3 top-2.5 w-4 h-4 text-slate-400" />
+              <input
+                type="text"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search by title, listing ref, locality, or project..."
+                className="w-full pl-9 pr-4 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:bg-white"
+              />
+            </div>
+
+            <div className="flex flex-wrap items-center gap-2 w-full lg:w-auto">
+              {/* Status */}
+              <select
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+                className="h-9 px-3 text-xs bg-white border border-slate-300 rounded-lg text-slate-700"
+              >
+                <option value="all">All Statuses</option>
+                <option value="available">Available</option>
+                <option value="reserved">Reserved / On Hold</option>
+                <option value="sold">Sold / Unavailable</option>
+              </select>
+
+              {/* Type */}
+              <select
+                value={propertyType}
+                onChange={(e) => setPropertyType(e.target.value)}
+                className="h-9 px-3 text-xs bg-white border border-slate-300 rounded-lg text-slate-700"
+              >
+                <option value="all">All Property Types</option>
+                <option value="Apartment">Apartment</option>
+                <option value="House">House</option>
+                <option value="Residential Plot">Residential Plot</option>
+                <option value="Commercial Property">Commercial Property</option>
+                <option value="Shop/Office">Shop / Office</option>
+                <option value="Villa">Villa</option>
+              </select>
+
+              {/* City */}
+              <select
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+                className="h-9 px-3 text-xs bg-white border border-slate-300 rounded-lg text-slate-700"
+              >
+                <option value="all">All Cities</option>
+                <option value="Karachi">Karachi</option>
+                <option value="Lahore">Lahore</option>
+                <option value="Islamabad">Islamabad</option>
+                <option value="Rawalpindi">Rawalpindi</option>
+              </select>
+
+              <Button type="submit" variant="secondary" size="sm">
+                Filter
+              </Button>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
+
+      {/* Grid or List Display */}
+      {initialProperties.length === 0 ? (
+        <EmptyState
+          icon={Building}
+          title="No properties in catalogue"
+          description={
+            search || status !== "all"
+              ? "No inventory matches your current filters."
+              : "Add your first real estate listing to begin managing deals."
+          }
+          actionLabel={role !== "sales_agent" ? "Add Property" : undefined}
+          onAction={() => setIsCreateOpen(true)}
+        />
+      ) : viewMode === "grid" ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {initialProperties.map((prop) => {
+            const st = PROPERTY_STATUS_CONFIG[prop.status];
+            return (
+              <Card
+                key={prop.id}
+                className="overflow-hidden hover:shadow-premium transition-all group flex flex-col justify-between"
+              >
+                <div>
+                  {/* Property Image Cover */}
+                  <div className="relative h-48 w-full bg-slate-900 overflow-hidden">
+                    {prop.coverImageUrl ? (
+                      <img
+                        src={prop.coverImageUrl}
+                        alt={prop.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex flex-col items-center justify-center bg-slate-800 text-slate-400 p-4 text-center">
+                        <Building className="w-8 h-8 mb-1 text-slate-500" />
+                        <span className="text-[11px] font-semibold">{prop.propertyType}</span>
+                      </div>
+                    )}
+                    <span
+                      className={`absolute top-3 left-3 px-2.5 py-1 rounded-full text-xs font-bold shadow-sm ${st.bg} ${st.color}`}
+                    >
+                      {st.label}
+                    </span>
+                    <span className="absolute bottom-3 right-3 px-2 py-0.5 rounded bg-black/75 backdrop-blur-xs text-[10px] font-mono text-white">
+                      Ref: {prop.listingReference}
+                    </span>
+                  </div>
+
+                  <div className="p-5 space-y-2">
+                    <p className="text-xs font-bold text-primary">{prop.propertyType}</p>
+                    <Link
+                      href={`/properties/${prop.id}`}
+                      className="font-extrabold text-base text-navy-deep group-hover:text-primary transition-colors line-clamp-1 block"
+                    >
+                      {prop.title}
+                    </Link>
+                    <p className="text-xs text-slate-500 flex items-center gap-1">
+                      <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                      <span>
+                        {prop.area}, {prop.city}
+                      </span>
+                    </p>
+
+                    <div className="pt-2 flex items-center justify-between border-t border-slate-100 text-xs text-slate-600">
+                      <span className="flex items-center gap-1 font-semibold">
+                        <Maximize2 className="w-3.5 h-3.5 text-slate-400" />
+                        {prop.size} {prop.sizeUnit}
+                      </span>
+                      {prop.bedrooms && (
+                        <span className="flex items-center gap-1 font-semibold">
+                          <Bed className="w-3.5 h-3.5 text-slate-400" />
+                          {prop.bedrooms} Bed
+                        </span>
+                      )}
+                      {prop.bathrooms && (
+                        <span className="flex items-center gap-1 font-semibold">
+                          <Bath className="w-3.5 h-3.5 text-slate-400" />
+                          {prop.bathrooms} Bath
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-5 pt-0 flex items-center justify-between border-t border-slate-100">
+                  <div>
+                    <span className="text-[10px] text-slate-400 uppercase font-bold">Asking Price</span>
+                    <p className="text-lg font-black text-navy-deep">
+                      {formatCurrency(prop.price, prop.currency)}
+                    </p>
+                  </div>
+                  <Link href={`/properties/${prop.id}`}>
+                    <Button variant="outline" size="sm" className="text-xs font-semibold">
+                      Details <ArrowRight className="w-3.5 h-3.5 ml-1" />
+                    </Button>
+                  </Link>
+                </div>
+              </Card>
+            );
+          })}
+        </div>
+      ) : (
+        /* List Mode */
+        <Card>
+          <CardContent className="p-0">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse text-xs">
+                <thead>
+                  <tr className="border-b border-slate-200 bg-slate-50/75 text-slate-500 font-semibold">
+                    <th className="p-3 pl-6">Listing Reference & Title</th>
+                    <th className="p-3">Location</th>
+                    <th className="p-3">Type</th>
+                    <th className="p-3">Size</th>
+                    <th className="p-3">Price</th>
+                    <th className="p-3">Status</th>
+                    <th className="p-3 pr-6 text-right">Action</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {initialProperties.map((prop) => {
+                    const st = PROPERTY_STATUS_CONFIG[prop.status];
+                    return (
+                      <tr key={prop.id} className="hover:bg-slate-50 transition-colors">
+                        <td className="p-3 pl-6">
+                          <Link
+                            href={`/properties/${prop.id}`}
+                            className="font-bold text-navy-deep hover:text-primary transition-colors block text-sm max-w-sm truncate"
+                          >
+                            {prop.title}
+                          </Link>
+                          <span className="text-[11px] text-slate-400">
+                            Ref: {prop.listingReference} {prop.projectName ? `• ${prop.projectName}` : ""}
+                          </span>
+                        </td>
+                        <td className="p-3 text-slate-700">
+                          {prop.area}, {prop.city}
+                        </td>
+                        <td className="p-3 font-semibold text-slate-700">{prop.propertyType}</td>
+                        <td className="p-3 font-medium">
+                          {prop.size} {prop.sizeUnit}
+                        </td>
+                        <td className="p-3 font-black text-navy-deep text-sm">
+                          {formatCurrency(prop.price, prop.currency)}
+                        </td>
+                        <td className="p-3">
+                          <span className={`px-2 py-0.5 rounded-full font-bold ${st.bg} ${st.color}`}>
+                            {st.label}
+                          </span>
+                        </td>
+                        <td className="p-3 pr-6 text-right">
+                          <Link href={`/properties/${prop.id}`}>
+                            <Button variant="ghost" size="sm" className="h-7 text-xs font-semibold">
+                              View <ArrowRight className="w-3.5 h-3.5 ml-1" />
+                            </Button>
+                          </Link>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Create Property Modal */}
+      <Modal
+        isOpen={isCreateOpen}
+        onClose={() => setIsCreateOpen(false)}
+        title="Add Real Estate Property"
+        description="Create a residential or commercial inventory item."
+        maxWidth="xl"
+      >
+        <form onSubmit={handleCreateProperty} className="space-y-4">
+          <Input
+            id="pTitle"
+            label="Property Title *"
+            placeholder="e.g. 1-Kanal Designer Villa in DHA Phase 6"
+            value={formData.title}
+            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+            required
+          />
+
+          <div className="grid grid-cols-2 gap-3">
+            <Input
+              id="pRef"
+              label="Listing Reference *"
+              placeholder="e.g. SKY-LHE-005"
+              value={formData.listingReference}
+              onChange={(e) => setFormData({ ...formData, listingReference: e.target.value })}
+              required
+            />
+            <Input
+              id="pProject"
+              label="Project / Development"
+              placeholder="e.g. DHA Phase 6 Enclave"
+              value={formData.projectName}
+              onChange={(e) => setFormData({ ...formData, projectName: e.target.value })}
+            />
+          </div>
+
+          <div className="grid grid-cols-3 gap-3">
+            <div className="space-y-1.5">
+              <label className="block text-xs font-semibold text-slate-700">Property Type</label>
+              <select
+                value={formData.propertyType}
+                onChange={(e) => setFormData({ ...formData, propertyType: e.target.value as any })}
+                className="w-full h-10 px-3 text-xs bg-white border border-slate-300 rounded-lg"
+              >
+                <option value="Apartment">Apartment</option>
+                <option value="House">House</option>
+                <option value="Residential Plot">Residential Plot</option>
+                <option value="Commercial Property">Commercial Property</option>
+                <option value="Shop/Office">Shop / Office</option>
+                <option value="Villa">Villa</option>
+              </select>
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="block text-xs font-semibold text-slate-700">City *</label>
+              <select
+                value={formData.city}
+                onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                className="w-full h-10 px-3 text-xs bg-white border border-slate-300 rounded-lg"
+              >
+                <option value="Karachi">Karachi</option>
+                <option value="Lahore">Lahore</option>
+                <option value="Islamabad">Islamabad</option>
+                <option value="Rawalpindi">Rawalpindi</option>
+              </select>
+            </div>
+
+            <Input
+              id="pArea"
+              label="Locality / Sector *"
+              placeholder="e.g. DHA Phase 6 Block J"
+              value={formData.area}
+              onChange={(e) => setFormData({ ...formData, area: e.target.value })}
+              required
+            />
+          </div>
+
+          <div className="grid grid-cols-3 gap-3">
+            <Input
+              id="pSize"
+              label="Size Number *"
+              type="number"
+              placeholder="e.g. 1"
+              value={formData.size}
+              onChange={(e) => setFormData({ ...formData, size: e.target.value })}
+              required
+            />
+
+            <div className="space-y-1.5">
+              <label className="block text-xs font-semibold text-slate-700">Size Unit</label>
+              <select
+                value={formData.sizeUnit}
+                onChange={(e) => setFormData({ ...formData, sizeUnit: e.target.value })}
+                className="w-full h-10 px-3 text-xs bg-white border border-slate-300 rounded-lg"
+              >
+                <option value="Marla">Marla</option>
+                <option value="Kanal">Kanal</option>
+                <option value="Sq Ft">Sq Ft</option>
+                <option value="Sq Yds">Sq Yds</option>
+              </select>
+            </div>
+
+            <Input
+              id="pPrice"
+              label="Price (PKR) *"
+              type="number"
+              placeholder="e.g. 135000000"
+              value={formData.price}
+              onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+              required
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <Input
+              id="pBeds"
+              label="Bedrooms (Optional)"
+              type="number"
+              placeholder="5"
+              value={formData.bedrooms}
+              onChange={(e) => setFormData({ ...formData, bedrooms: e.target.value })}
+            />
+            <Input
+              id="pBaths"
+              label="Bathrooms (Optional)"
+              type="number"
+              placeholder="6"
+              value={formData.bathrooms}
+              onChange={(e) => setFormData({ ...formData, bathrooms: e.target.value })}
+            />
+          </div>
+
+          <Textarea
+            id="pDesc"
+            label="Description & Highlights"
+            placeholder="Property description, finishes, possession status..."
+            value={formData.description}
+            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+          />
+
+          <div className="flex justify-end gap-2 pt-2">
+            <Button type="button" variant="outline" size="sm" onClick={() => setIsCreateOpen(false)}>
+              Cancel
+            </Button>
+            <Button type="submit" size="sm" isLoading={isLoading}>
+              Save Property
+            </Button>
+          </div>
+        </form>
+      </Modal>
+    </div>
+  );
+}
